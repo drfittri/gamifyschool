@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import type { LessonTopic } from '../utils/types'
 import { playCorrect, playWrong, playClick } from '../hooks/useSound'
 import { Car } from 'lucide-react'
@@ -36,7 +36,7 @@ export default function SentenceBuilder({ words: _words, unit, onCorrect, onWron
   const [wrongShake, setWrongShake] = useState(false)
   const maxRounds = sentences.length
 
-  useMemo(() => {
+  useEffect(() => {
     if (round < maxRounds) {
       const s = sentences[round]
       const parts = s.split(/\s+/)
