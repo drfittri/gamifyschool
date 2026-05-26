@@ -115,14 +115,20 @@ export default function ComprehensionMap({ words: _words, unit, onCorrect, onWro
 
   return (
     <div className="flex flex-col items-center gap-4 max-w-lg mx-auto w-full">
-      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Read the story, then answer the question!</p>
+      <div className="clay-card px-5 py-2 text-center border-3 border-amber-200 bg-amber-50 w-full">
+        <div className="text-2xl mb-0.5">🗺️📖⚔️</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Read the adventurer's quest journal! Answer correctly to take a step toward the treasure!
+        </p>
+      </div>
       <div className="flex items-center gap-2 text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
         <Compass className="w-6 h-6 text-clay-cta" strokeWidth={2.5} />
-        Read & Answer {index + 1}/{questions.length}
+        Quest entry {index + 1}/{questions.length}
       </div>
 
       <div className="clay-card p-5 w-full space-y-3">
-        <div className="bg-clay-surface rounded-xl p-4 text-base leading-relaxed text-clay-text font-semibold">
+        <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 text-base leading-relaxed text-clay-text font-semibold">
+          <span className="text-xs font-extrabold text-amber-600 uppercase tracking-wider block mb-2">📖 Quest Journal</span>
           {q.passage}
         </div>
         <p className="text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
@@ -172,7 +178,7 @@ export default function ComprehensionMap({ words: _words, unit, onCorrect, onWro
           })}
         </div>
         <p className="text-xs text-center font-semibold text-clay-text-muted mt-2">
-          {steps >= maxSteps ? 'Treasure found!' : `${steps}/${maxSteps} steps to the treasure`}
+          {steps >= maxSteps ? '🏆 Treasure found! Quest complete!' : `⚔️ ${steps}/${maxSteps} steps to the treasure`}
         </p>
       </div>
     </div>

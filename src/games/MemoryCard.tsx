@@ -67,7 +67,13 @@ export default function MemoryCardGame({ words, onCorrect, onWrong, onComplete }
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Flip two cards to find matching pairs!</p>
+      <div className="clay-card px-5 py-2 text-center border-3 border-blue-200 bg-blue-50 w-full max-w-sm">
+        <div className="text-2xl mb-0.5">🗺️💎⛏️</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Pirate treasure is buried underground!
+        </p>
+        <p className="text-sm text-clay-text-muted font-semibold">Flip two tiles — find the matching treasure pairs!</p>
+      </div>
     <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${cols}, minmax(80px, 100px))` }}>
       {cards.map(card => (
         <button key={card.id} onClick={() => handleFlip(card.id)}
@@ -83,7 +89,7 @@ export default function MemoryCardGame({ words, onCorrect, onWrong, onComplete }
           {card.flipped || card.matched ? (
             card.type === 'word' ? <span className="text-sm">{card.content}</span> : <span className="text-3xl">{card.content}</span>
           ) : (
-            <span className="text-clay-primary-light/50 text-2xl">?</span>
+            <span className="text-2xl">🟫</span>
           )}
         </button>
       ))}

@@ -80,9 +80,15 @@ export default function PhonicsRocket({ words: _words, unit, onCorrect, onWrong,
 
   return (
     <div className="flex flex-col items-center gap-4 max-w-lg mx-auto w-full">
+      <div className="clay-card px-5 py-2 text-center border-3 border-indigo-200 bg-indigo-50 w-full">
+        <div className="text-2xl mb-0.5">🚀🌌⭐</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Load the right fuel word to blast the rocket into space! Find the word with the target sound!
+        </p>
+      </div>
       <div className="flex items-center gap-2 text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
         <Rocket className="w-6 h-6 text-clay-cta" strokeWidth={2.5} />
-        Phonics Rocket {index + 1}/{questions.length}
+        Launch {index + 1}/{questions.length}
       </div>
 
       <div className="w-full bg-clay-surface rounded-2xl p-3 space-y-2">
@@ -106,7 +112,7 @@ export default function PhonicsRocket({ words: _words, unit, onCorrect, onWrong,
       </div>
 
       <div className="clay-card p-5 w-full text-center space-y-4">
-        <p className="text-clay-text-muted text-sm font-semibold">Which word has the sound?</p>
+        <p className="text-clay-text-muted text-sm font-semibold">🛸 Which word has this rocket fuel sound?</p>
         <p className="text-3xl font-extrabold text-clay-primary animate-float" style={{ fontFamily: 'var(--font-display)' }}>
           /{q.sound}/
         </p>

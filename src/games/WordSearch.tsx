@@ -71,7 +71,13 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="text-xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Find the hidden words!</div>
+      <div className="clay-card px-5 py-2 text-center border-3 border-teal-200 bg-teal-50 w-full max-w-sm">
+        <div className="text-2xl mb-0.5">🔭🌿🎯</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Recon mission! Enemy words are hiding in the jungle grid!
+        </p>
+        <p className="text-sm text-clay-text-muted font-semibold">Tap letters in order to locate the target words!</p>
+      </div>
       <div className="flex gap-1.5 flex-wrap justify-center max-w-[380px]">
         {pool.map(w => (
           <span key={w} className={`px-2.5 py-1 rounded-lg text-xs font-extrabold transition-all ${found.has(w) ? 'bg-clay-success/20 text-clay-success line-through' : 'bg-clay-surface text-clay-text'}`}
@@ -89,7 +95,7 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
           </button>
         )))}
       </div>
-      <div className="text-clay-text-muted text-sm font-semibold">Found: {found.size}/{pool.length}</div>
+      <div className="text-clay-text-muted text-sm font-semibold">🎯 Targets located: {found.size}/{pool.length}</div>
     </div>
   )
 }

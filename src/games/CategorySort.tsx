@@ -120,13 +120,19 @@ export default function CategorySort({ words: _words, onCorrect, onWrong, onComp
 
   return (
     <div className="flex flex-col items-center gap-4 max-w-lg mx-auto w-full">
+      <div className="clay-card px-5 py-2 text-center border-3 border-emerald-200 bg-emerald-50 w-full">
+        <div className="text-2xl mb-0.5">🪖🏕️⚔️</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Recruits are arriving! Sort each word-soldier into the correct battalion barracks!
+        </p>
+      </div>
       <div className="flex items-center gap-2 text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
         <Sword className="w-6 h-6 text-clay-cta" strokeWidth={2.5} />
-        Sort the Words! {index + 1}/{items.length}
+        Recruit {index + 1}/{items.length}
       </div>
 
       <div className="clay-card p-5 w-full text-center space-y-4">
-        <p className="text-clay-text-muted text-sm font-semibold">Which group does this word belong to?</p>
+        <p className="text-clay-text-muted text-sm font-semibold">Which battalion does this recruit belong to?</p>
         <p className="text-3xl font-extrabold text-clay-text animate-float" style={{ fontFamily: 'var(--font-display)' }}>
           {item.word}
         </p>
@@ -155,7 +161,7 @@ export default function CategorySort({ words: _words, onCorrect, onWrong, onComp
       <div className="flex gap-1 items-center bg-clay-surface rounded-2xl px-4 py-2">
         <Sword className="w-5 h-5 text-clay-cta" strokeWidth={2.5} />
         <span className="text-clay-text font-extrabold text-sm" style={{ fontFamily: 'var(--font-display)' }}>
-          {soldiers}/10 recruited
+          {soldiers}/10 soldiers deployed!
         </span>
         <span className="flex gap-0.5">
           {[...Array(soldiers)].map((_, i) => (

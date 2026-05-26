@@ -57,9 +57,14 @@ export default function SpellingBeeGame({ words, onCorrect, onWrong, onComplete 
 
   return (
     <div className="flex flex-col items-center gap-4 max-w-lg mx-auto">
+      <div className="clay-card px-5 py-2 text-center border-3 border-amber-200 bg-amber-50 w-full">
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          📜 Cast the magic spell! Tap the enchanted letters in order!
+        </p>
+      </div>
       <div className="text-6xl animate-float">{emoji}</div>
       <div className="text-2xl font-extrabold text-clay-text text-center" style={{ fontFamily: 'var(--font-display)' }}>
-        Spell the word!
+        ✨ Spell the magic word!
         {hint && <span className="ml-2 text-base bg-clay-surface px-3 py-1 rounded-full text-clay-text-muted">{word[0]}...{word[word.length - 1]}</span>}
       </div>
       <div className="flex gap-2.5 flex-wrap justify-center min-h-[58px]">
@@ -92,13 +97,13 @@ export default function SpellingBeeGame({ words, onCorrect, onWrong, onComplete 
       </div>
       <div className="flex gap-3 mt-1">
         <button onClick={() => setHint(true)} disabled={hint} className="flex items-center gap-1.5 clay-surface px-4 py-2.5 text-clay-text-muted font-bold text-sm disabled:opacity-50">
-          <Lightbulb className="w-4 h-4" /> Hint
+          <Lightbulb className="w-4 h-4" /> 🔮 Magic Hint
         </button>
         <button onClick={checkAnswer} disabled={answer.length < letters.length} className={`flex items-center gap-1.5 clay-button px-5 py-2.5 text-lg ${answer.length < letters.length ? 'opacity-50' : ''}`}>
-          <Check className="w-5 h-5" /> Check
+          <Check className="w-5 h-5" /> ✨ Cast Spell!
         </button>
       </div>
-      <div className="text-clay-text-muted text-sm font-semibold">Word {index + 1} of {pool.length}</div>
+      <div className="text-clay-text-muted text-sm font-semibold">📜 Scroll {index + 1} of {pool.length}</div>
     </div>
   )
 }

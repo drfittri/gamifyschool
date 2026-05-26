@@ -101,7 +101,7 @@ function Dashboard({ stats }: { stats: any }) {
             className="clay-card-interactive px-4 py-2.5 text-sm font-bold text-clay-text flex items-center gap-2"
           >
             {tab === 'games' ? (
-              <><Trophy className="w-5 h-5 text-clay-yellow" strokeWidth={2.5} />Badges ({earnedBadges.length})</>
+              <><Trophy className="w-5 h-5 text-clay-yellow" strokeWidth={2.5} />Honours ({earnedBadges.length})</>
             ) : (
               <><BookOpen className="w-5 h-5 text-clay-primary" strokeWidth={2.5} />Games</>
             )}
@@ -121,7 +121,7 @@ function Dashboard({ stats }: { stats: any }) {
         {tab === 'badges' ? (
           <div className="animate-slide-up space-y-4">
             <h2 className="text-2xl font-extrabold text-clay-text text-center" style={{ fontFamily: 'var(--font-display)' }}>
-              🏆 Your Badges
+              🏆 Battle Honours
             </h2>
             <BadgeGrid stats={stats} />
           </div>

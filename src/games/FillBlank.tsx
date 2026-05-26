@@ -46,7 +46,12 @@ export default function FillBlankGame({ words, onCorrect, onWrong, onComplete }:
 
   return (
     <div className="flex flex-col items-center gap-5 max-w-md mx-auto w-full">
-      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Pick the right word to complete the sentence!</p>
+      <div className="clay-card px-5 py-2 text-center border-3 border-purple-200 bg-purple-50 w-full">
+        <div className="text-2xl mb-0.5">⚔️🛡️🏹</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Your warrior needs a battle cry! Fill the missing word to charge into battle!
+        </p>
+      </div>
       <div className="text-6xl animate-float">{q.emoji}</div>
       <div className="text-2xl font-extrabold text-clay-text text-center bg-clay-surface px-6 py-5 rounded-2xl w-full" style={{ fontFamily: 'var(--font-display)' }}>
         {q.sentence.split('___').map((part, i) => (
@@ -71,7 +76,7 @@ export default function FillBlankGame({ words, onCorrect, onWrong, onComplete }:
           ))}
         </div>
       )}
-      <div className="text-clay-text-muted text-sm font-semibold">{index + 1} of {questions.length}</div>
+      <div className="text-clay-text-muted text-sm font-semibold">⚔️ Battle cry {index + 1} of {questions.length}</div>
     </div>
   )
 }

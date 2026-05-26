@@ -50,11 +50,19 @@ export default function WordScrambleGame({ words, onCorrect, onWrong, onComplete
 
   return (
     <div className="flex flex-col items-center gap-4 max-w-lg mx-auto">
-      <div className="text-6xl animate-float">{emoji}</div>
-      <div className="text-2xl font-extrabold text-clay-text bg-clay-surface px-5 py-3 rounded-2xl tracking-[0.25em] select-none" style={{ fontFamily: 'var(--font-display)' }}>
-        {scrambled.toUpperCase()}
+      <div className="clay-card px-5 py-2 text-center border-3 border-cyan-200 bg-cyan-50 w-full">
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          🔐 Enemy spies scrambled our battle code! Decode the secret word!
+        </p>
       </div>
-      <div className="text-lg text-clay-text-muted font-semibold">Unscramble the letters!</div>
+      <div className="text-6xl animate-float">{emoji}</div>
+      <div className="flex flex-col items-center gap-1">
+        <span className="text-xs font-bold text-cyan-600 tracking-widest uppercase">📡 Scrambled Code:</span>
+        <div className="text-2xl font-extrabold text-clay-text bg-cyan-100 border-2 border-cyan-300 px-5 py-3 rounded-2xl tracking-[0.25em] select-none" style={{ fontFamily: 'var(--font-display)' }}>
+          {scrambled.toUpperCase()}
+        </div>
+      </div>
+      <div className="text-base text-clay-text-muted font-semibold">🕵️ Crack the code below!</div>
       <div className="flex gap-2 flex-wrap justify-center min-h-[50px]">
         {word.split('').map((_, i) => (
           <div key={i} className={`min-w-[48px] h-[48px] rounded-2xl flex items-center justify-center text-2xl font-extrabold transition-all duration-200 ${
@@ -79,10 +87,10 @@ export default function WordScrambleGame({ words, onCorrect, onWrong, onComplete
       </div>
       <div className="flex gap-3 mt-1">
         <button onClick={handleHint} disabled={hint} className="flex items-center gap-1.5 clay-surface px-4 py-2.5 text-clay-text-muted font-bold text-sm disabled:opacity-50">
-          <Lightbulb className="w-4 h-4" /> Hint
+          <Lightbulb className="w-4 h-4" /> 🧭 Clue
         </button>
         <button onClick={checkAnswer} disabled={playerInput.length < word.length} className={`flex items-center gap-1.5 clay-button px-5 py-2.5 text-lg ${playerInput.length < word.length ? 'opacity-50' : ''}`}>
-          <Check className="w-5 h-5" /> Check
+          <Check className="w-5 h-5" /> 📡 Send Code!
         </button>
       </div>
     </div>

@@ -82,10 +82,12 @@ export default function WordMatchGame({ words, onCorrect, onWrong, onComplete }:
 
   return (
     <div className="flex flex-col items-center gap-3 w-full">
-      <div className="clay-card px-5 py-3 text-center mb-1">
-        <p className="text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
-          👈 Tap a picture-word, then tap its match! 👉
+      <div className="clay-card px-5 py-3 text-center mb-1 border-3 border-red-200 bg-red-50">
+        <div className="text-3xl mb-1">🐉🔥🌑</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Two dragons lost their shadow twins in battle!
         </p>
+        <p className="text-sm text-clay-text-muted font-semibold">Tap a fire dragon 🐉 on the left, then its shadow on the right!</p>
       </div>
       <div className="flex gap-6 justify-center items-start flex-wrap max-w-2xl">
         <div className="flex flex-col gap-2.5">
@@ -132,7 +134,7 @@ export default function WordMatchGame({ words, onCorrect, onWrong, onComplete }:
           ))}
         </div>
       </div>
-      <p className="text-clay-text-muted text-sm font-semibold mt-1">{matchedLeft.size} of {pool.length} matched ✅</p>
+      <p className="text-clay-text-muted text-sm font-semibold mt-1">🐉 {matchedLeft.size} of {pool.length} dragon pairs reunited!</p>
     </div>
   )
 }

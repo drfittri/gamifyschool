@@ -88,10 +88,15 @@ export default function SentenceBuilder({ words: _words, unit, onCorrect, onWron
 
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-xl mx-auto">
-      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Tap the words in the right order to build the sentence!</p>
+      <div className="clay-card px-5 py-2 text-center border-3 border-red-200 bg-red-50 w-full">
+        <div className="text-2xl mb-0.5">🏎️🏁⚡</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Build your race strategy! Put the words in the right order to win the championship!
+        </p>
+      </div>
       <div className="flex items-center gap-2 text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
         <Car className="w-6 h-6 text-clay-cta" strokeWidth={2.5} />
-        Sentence {round + 1}/{maxRounds}
+        Lap {round + 1}/{maxRounds}
       </div>
 
       <div className="w-full bg-clay-surface rounded-2xl p-4 space-y-3">
@@ -104,7 +109,7 @@ export default function SentenceBuilder({ words: _words, unit, onCorrect, onWron
 
         <div className={`flex flex-wrap gap-2 justify-center min-h-[52px] p-3 bg-white/50 rounded-2xl border-3 border-dashed border-clay-primary-light/40 ${wrongShake ? 'animate-wiggle' : ''}`}>
           {built.length === 0 && (
-            <span className="text-clay-text-muted/50 font-semibold text-sm self-center">Tap words below to build the sentence</span>
+            <span className="text-clay-text-muted/50 font-semibold text-sm self-center">🏎️ Tap words below to plan the race strategy!</span>
           )}
           {built.map((w, i) => (
             <button

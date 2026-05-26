@@ -46,11 +46,28 @@ export default function HangmanGame({ words, onCorrect, onWrong, onComplete }: P
 
   const keys = 'abcdefghijklmnopqrstuvwxyz'.split('')
 
+  const dragonStage = ["🥚", "🐣", "🐲", "🐲💨", "🔥🐲", "💀🔥"][Math.min(wrongs, 5)]
+  const dragonMsg = ["Dragon egg is sleeping...", "Dragon is waking up!", "Dragon is getting angry!", "Dragon is breathing smoke!", "Dragon is about to fire!", "The dragon won! 🔥"][Math.min(wrongs, 5)]
+
   return (
     <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
-      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Guess the letters to find the word!</p>
-      <div className="text-3xl">{"😊🥺😟😰😱💀".charAt(Math.min(wrongs, 5))}</div>
-      <div className="text-xs text-clay-text-muted font-semibold">Wrong guesses: {wrongs}/{maxWrongs}</div>
+      <div className="clay-card px-5 py-2 text-center border-3 border-rose-200 bg-rose-50 w-full">
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          🐲 A dragon has trapped a word! Guess the letters to break the spell before the dragon strikes!
+        </p>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <div className="text-5xl animate-sway">{dragonStage}</div>
+        <div className="text-xs text-clay-error font-extrabold">{dragonMsg}</div>
+      </div>
+      <div className="flex items-center gap-2 text-sm font-bold text-clay-text-muted">
+        <span>Dragon power:</span>
+        <div className="flex gap-1">
+          {[...Array(maxWrongs)].map((_, i) => (
+            <span key={i} className={`text-base ${i < wrongs ? '🔥' : '💧'}`}>{i < wrongs ? '🔥' : '💧'}</span>
+          ))}
+        </div>
+      </div>
       <div className="text-6xl animate-float">{emoji}</div>
       <div className="flex gap-2 flex-wrap justify-center">
         {word.split('').map((l, i) => (
@@ -63,7 +80,8 @@ export default function HangmanGame({ words, onCorrect, onWrong, onComplete }: P
           </div>
         ))}
       </div>
-      {isLost && <div className="text-clay-error font-extrabold text-lg animate-wiggle">It was: <span className="text-clay-text">{word}</span></div>}
+      {isLost && <div className="text-clay-error font-extrabold text-lg animate-wiggle">🔥 Dragon wins! The word was: <span className="text-clay-text">{word}</span></div>}
+      {isWon && <div className="text-clay-success font-extrabold text-lg animate-bounce-in">🛡️ Dragon defeated! Well done!</div>}
       <div className="flex flex-wrap gap-1 justify-center max-w-[340px]">
         {keys.map(l => {
           const used = guessed.has(l); const correct = word.includes(l) && guessed.has(l); const wrong = guessed.has(l) && !word.includes(l)
@@ -77,7 +95,7 @@ export default function HangmanGame({ words, onCorrect, onWrong, onComplete }: P
           )
         })}
       </div>
-      <div className="text-clay-text-muted text-sm font-semibold">Word {index + 1} of {pool.length}</div>
+      <div className="text-clay-text-muted text-sm font-semibold">🐲 Dragon {index + 1} of {pool.length}</div>
     </div>
   )
 }

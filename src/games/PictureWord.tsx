@@ -43,8 +43,13 @@ export default function PictureWordGame({ words, onCorrect, onWrong, onComplete 
 
   return (
     <div className="flex flex-col items-center gap-5 max-w-md mx-auto">
-      <div className="text-7xl animate-float">{emoji}</div>
-      <div className="text-2xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>What word matches this?</div>
+      <div className="clay-card px-5 py-2 text-center border-3 border-pink-200 bg-pink-50 w-full">
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          🏹 Your archer sees a target! Pick the right word-arrow to hit the bullseye!
+        </p>
+      </div>
+      <div className="text-8xl animate-float">{emoji}</div>
+      <div className="text-2xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>🎯 What word hits this target?</div>
       <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
         {options.map((opt, i) => {
           const isCorrect = opt === word; const isChosen = opt === chosen
@@ -57,7 +62,7 @@ export default function PictureWordGame({ words, onCorrect, onWrong, onComplete 
           return <button key={i} onClick={() => handleChoose(opt)} disabled={answered} className={cls} style={{ fontFamily: 'var(--font-display)' }}>{opt}</button>
         })}
       </div>
-      <div className="text-clay-text-muted text-sm font-semibold">Word {index + 1} of {pool.length}</div>
+      <div className="text-clay-text-muted text-sm font-semibold">🏹 Target {index + 1} of {pool.length}</div>
     </div>
   )
 }

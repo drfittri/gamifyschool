@@ -79,9 +79,9 @@ export default function GamePicker({ onSelectUnit, onSelectGame, unitIndex }: Pr
   return (
     <div className="animate-slide-up space-y-4">
       <div className="text-center mb-2">
-        <div className="text-6xl mb-2 animate-float">📚</div>
-        <h2 className="text-3xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Pick a Lesson!</h2>
-        <p className="text-clay-text-muted font-semibold">Choose a topic to start learning! 🌟</p>
+        <div className="text-6xl mb-2 animate-sway">🗺️</div>
+        <h2 className="text-3xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Choose Your Quest!</h2>
+        <p className="text-clay-text-muted font-semibold">Each lesson is a new adventure! ⚔️🚀🏹</p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {lessons.map((unit, i) => {

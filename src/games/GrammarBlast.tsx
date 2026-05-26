@@ -99,10 +99,15 @@ export default function GrammarBlast({ words, onCorrect, onWrong, onComplete }: 
 
   return (
     <div className="flex flex-col items-center gap-5 max-w-lg mx-auto w-full">
-      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Pick the right word to complete the sentence!</p>
+      <div className="clay-card px-5 py-2 text-center border-3 border-violet-200 bg-violet-50 w-full">
+        <div className="text-2xl mb-0.5">💣🏰⚔️</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Load the right grammar cannonball to blast through the fortress wall!
+        </p>
+      </div>
       <div className="flex items-center gap-2 text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
         <Crosshair className="w-6 h-6 text-clay-cta" strokeWidth={2.5} />
-        Grammar Blast! {index + 1}/{questions.length}
+        Cannon round {index + 1}/{questions.length}
       </div>
 
       <div className="clay-card p-6 w-full text-center space-y-5 relative overflow-hidden">

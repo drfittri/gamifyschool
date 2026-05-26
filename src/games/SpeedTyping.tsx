@@ -46,24 +46,35 @@ export default function SpeedTypingGame({ words, onCorrect, onWrong, onComplete 
 
   return (
     <div className="flex flex-col items-center gap-5 max-w-md mx-auto">
-      <div className="flex items-center gap-2 text-3xl font-extrabold" style={{ fontFamily: 'var(--font-display)' }}>
-        <span className={timeLeft <= 10 ? 'text-clay-error animate-pulse-soft' : 'text-clay-text'}>{timeLeft}s</span>
+      <div className="clay-card px-5 py-2 text-center border-3 border-orange-200 bg-orange-50 w-full">
+        <div className="text-2xl mb-0.5">🏎️⚡🏁</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          Type the word fast to keep your race car fuelled! Every correct word = more speed!
+        </p>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="text-2xl">⛽</span>
+        <div className="flex items-center gap-2 text-3xl font-extrabold" style={{ fontFamily: 'var(--font-display)' }}>
+          <span className={timeLeft <= 10 ? 'text-clay-error animate-pulse-soft' : 'text-clay-text'}>{timeLeft}s</span>
+          <span className="text-lg text-clay-text-muted font-bold">fuel</span>
+        </div>
       </div>
       <div className="text-6xl animate-float">{emoji}</div>
       <div className="text-3xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>{word}</div>
-      <div className="text-base text-clay-text-muted font-semibold">Type the word above!</div>
+      <div className="text-base text-clay-text-muted font-semibold">⌨️ Type the word to fuel your car!</div>
       <input ref={inputRef} value={input} onChange={e => setInput(e.target.value)}
         onKeyDown={e => { if (e.key === 'Enter') handleSubmit() }} disabled={gameOver}
         className={`min-h-[56px] w-full max-w-[260px] px-5 py-3 rounded-2xl text-2xl font-extrabold text-center outline-none transition-all border-3 bg-white/90 ${
           wrong ? 'border-clay-error animate-wiggle' : 'border-clay-primary-light/40 focus:border-clay-primary'
         }`} style={{ fontFamily: 'var(--font-display)' }} placeholder="Type here..." autoFocus />
       <button onClick={handleSubmit} disabled={gameOver || !input} className="clay-button px-6 py-3 text-lg disabled:opacity-50">Submit</button>
-      <div className="text-xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Score: {score}</div>
+      <div className="text-xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>🏎️ Words typed: {score}</div>
       {gameOver && (
         <div className="clay-card p-6 text-center animate-pop-in space-y-2">
-          <div className="text-5xl">🎉</div>
-          <p className="text-2xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Time's Up!</p>
-          <p className="text-lg text-clay-text-muted font-bold">You scored <span className="text-clay-primary">{score} points!</span></p>
+          <div className="text-5xl animate-sway">{score >= 10 ? '🏆' : score >= 5 ? '🥈' : '🏎️'}</div>
+          <p className="text-2xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>🏁 Race Finished!</p>
+          <p className="text-lg text-clay-text-muted font-bold">You fuelled your car <span className="text-clay-primary">{score} times!</span></p>
+          <p className="text-base font-bold text-clay-text-muted">{score >= 10 ? '🏆 Champion driver!' : score >= 5 ? '🥈 Great lap!' : '💪 Keep practising!'}</p>
         </div>
       )}
     </div>

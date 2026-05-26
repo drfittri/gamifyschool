@@ -48,13 +48,19 @@ export default function ListeningGame({ words, onCorrect, onWrong, onComplete }:
 
   return (
     <div className="flex flex-col items-center gap-5 max-w-md mx-auto">
+      <div className="clay-card px-5 py-2 text-center border-3 border-green-200 bg-green-50 w-full">
+        <div className="text-2xl mb-0.5">📻🎖️🔊</div>
+        <p className="text-base font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
+          HQ is broadcasting a secret word! Receive the signal, then identify it!
+        </p>
+      </div>
       <div className="text-7xl animate-float">{emoji}</div>
-      <div className="text-2xl font-extrabold text-clay-text text-center" style={{ fontFamily: 'var(--font-display)' }}>Listen and pick the right word!</div>
+      <div className="text-2xl font-extrabold text-clay-text text-center" style={{ fontFamily: 'var(--font-display)' }}>📻 Decode the HQ signal!</div>
       <button onClick={handleHear} disabled={answered}
-        className="clay-card-interactive flex items-center gap-3 px-8 py-4 text-clay-text font-extrabold text-xl border-3 border-white/80 animate-pulse-soft disabled:opacity-50"
+        className="clay-card-interactive flex items-center gap-3 px-8 py-4 text-clay-text font-extrabold text-xl border-3 border-green-300 bg-green-50 animate-pulse-soft disabled:opacity-50"
         style={{ fontFamily: 'var(--font-display)' }}>
-        <Volume2 className="w-7 h-7 text-clay-primary" strokeWidth={2.5} />
-        Listen!
+        <Volume2 className="w-7 h-7 text-green-600" strokeWidth={2.5} />
+        📡 Receive Signal!
       </button>
       <div className="grid grid-cols-2 gap-3 mt-2 w-full max-w-sm">
         {options.map((opt, i) => {
@@ -72,7 +78,7 @@ export default function ListeningGame({ words, onCorrect, onWrong, onComplete }:
           )
         })}
       </div>
-      <div className="text-clay-text-muted text-sm font-semibold">Word {index + 1} of {pool.length}</div>
+      <div className="text-clay-text-muted text-sm font-semibold">📻 Signal {index + 1} of {pool.length}</div>
     </div>
   )
 }
