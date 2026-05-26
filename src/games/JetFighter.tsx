@@ -89,6 +89,7 @@ export default function JetFighter({ words, onCorrect, onWrong, onComplete }: Pr
 
   return (
     <div className="flex flex-col items-center gap-3 w-full max-w-md mx-auto">
+      <p className="text-base font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Catch the checkmarked words, avoid the X words!</p>
       <div className="flex items-center justify-between w-full text-clay-text font-extrabold text-lg" style={{ fontFamily: 'var(--font-display)' }}>
         <span>Score: {score}</span>
         <span className="text-clay-error">Misses: {misses}/{maxMisses}</span>
@@ -128,8 +129,8 @@ export default function JetFighter({ words, onCorrect, onWrong, onComplete }: Pr
         </div>
 
         <div className="absolute bottom-1 left-0 right-0 flex justify-between px-3">
-          <button onClick={moveLeft} className="w-12 h-12 rounded-full bg-white/60 border-2 border-white flex items-center justify-center text-xl font-extrabold text-sky-700 hover:bg-white active:scale-90 transition-all">◀</button>
-          <button onClick={moveRight} className="w-12 h-12 rounded-full bg-white/60 border-2 border-white flex items-center justify-center text-xl font-extrabold text-sky-700 hover:bg-white active:scale-90 transition-all">▶</button>
+          <button onClick={moveLeft} className="w-12 h-12 rounded-full bg-white/60 border-2 border-white flex items-center justify-center text-xl font-extrabold text-sky-700 hover:bg-white active:scale-90 transition-all">&#9664;</button>
+          <button onClick={moveRight} className="w-12 h-12 rounded-full bg-white/60 border-2 border-white flex items-center justify-center text-xl font-extrabold text-sky-700 hover:bg-white active:scale-90 transition-all">&#9654;</button>
         </div>
       </div>
 

@@ -31,6 +31,7 @@ export default function FillBlankGame({ words, onCorrect, onWrong, onComplete }:
 
   return (
     <div className="flex flex-col items-center gap-5 max-w-md mx-auto w-full">
+      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Pick the right word to complete the sentence!</p>
       <div className="text-2xl font-extrabold text-clay-text text-center bg-clay-surface px-6 py-5 rounded-2xl w-full" style={{ fontFamily: 'var(--font-display)' }}>
         {q.sentence.split('___').map((part, i) => (
           <span key={i}>

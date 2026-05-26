@@ -1,4 +1,4 @@
-import { BookOpen, Trophy, Zap, Star, Award, ArrowLeft, RefreshCw, Puzzle, Type, Image, PenLine, Search, HelpCircle, Ear, LayoutGrid, Car, Crosshair, Sword, Rocket, Compass } from 'lucide-react'
+import { BookOpen, Trophy, Zap, Star, Award, ArrowLeft, RefreshCw, Puzzle, Type, Image, PenLine, Search, HelpCircle, Ear, LayoutGrid, AlignJustify, CheckCheck, FolderKanban, Mic, BookMarked } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { HashRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import { useProgress } from './hooks/useProgress'
@@ -21,11 +21,11 @@ import WordSearchGame from './games/WordSearch'
 import HangmanGame from './games/Hangman'
 import SpeedTypingGame from './games/SpeedTyping'
 import ListeningGame from './games/Listening'
-import RacerWordsGame from './games/RacerWords'
-import TargetBlastGame from './games/TargetBlast'
-import TroopMarchGame from './games/TroopMarch'
-import RocketLaunchGame from './games/RocketLaunch'
-import TreasureMapGame from './games/TreasureMap'
+import SentenceBuilder from './games/SentenceBuilder'
+import GrammarBlast from './games/GrammarBlast'
+import CategorySort from './games/CategorySort'
+import PhonicsRocket from './games/PhonicsRocket'
+import ComprehensionMap from './games/ComprehensionMap'
 import JetFighterGame from './games/JetFighter'
 import { playGameStart } from './hooks/useSound'
 
@@ -34,16 +34,16 @@ const gameComponents: Record<string, any> = {
   pictureword: PictureWordGame, memorycard: MemoryCardGame, fillblank: FillBlankGame,
   wordsearch: WordSearchGame, hangman: HangmanGame, speedtyping: SpeedTypingGame,
   listening: ListeningGame,
-  racerwords: RacerWordsGame, targetblast: TargetBlastGame, troopmarch: TroopMarchGame,
-  rocketlaunch: RocketLaunchGame, treasuremap: TreasureMapGame, jetfighter: JetFighterGame,
+  sentencebuilder: SentenceBuilder, grammarblast: GrammarBlast, categorysort: CategorySort,
+  phonicsrocket: PhonicsRocket, comprehensionmap: ComprehensionMap, jetfighter: JetFighterGame,
 }
 
 const GAME_ICONS: Record<string, any> = {
   wordmatch: Puzzle, spellingbee: Type, wordscramble: LayoutGrid, pictureword: Image,
   memorycard: LayoutGrid, fillblank: PenLine, wordsearch: Search, hangman: HelpCircle,
   speedtyping: Zap, listening: Ear,
-  racerwords: Car, targetblast: Crosshair, troopmarch: Sword,
-  rocketlaunch: Rocket, treasuremap: Compass, jetfighter: LayoutGrid,
+  sentencebuilder: AlignJustify, grammarblast: CheckCheck, categorysort: FolderKanban,
+  phonicsrocket: Mic, comprehensionmap: BookMarked, jetfighter: LayoutGrid,
 }
 
 function App() {
@@ -263,7 +263,7 @@ function GameView({
 
       <div className="flex-1 flex items-center justify-center p-4">
         {!completed ? (
-          <GameComp words={allWords} onCorrect={handleCorrect} onWrong={handleWrong} onComplete={handleComplete} />
+          <GameComp words={allWords} unit={unit} onCorrect={handleCorrect} onWrong={handleWrong} onComplete={handleComplete} />
         ) : (
           <div className="clay-card p-8 text-center animate-pop-in max-w-md w-full space-y-5">
             <Award className="w-20 h-20 mx-auto text-clay-yellow" strokeWidth={1.5} />

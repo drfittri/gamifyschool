@@ -75,8 +75,10 @@ export default function WordMatchGame({ words, onCorrect, onWrong, onComplete }:
   }
 
   return (
-    <div className="flex gap-6 justify-center items-start flex-wrap max-w-2xl">
-      <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col items-center gap-3 w-full">
+      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Tap a word on the left, then tap the matching word on the right!</p>
+      <div className="flex gap-6 justify-center items-start flex-wrap max-w-2xl">
+        <div className="flex flex-col gap-2.5">
         {leftItems.map((item, i) => (
           <button
             key={i}
@@ -118,6 +120,7 @@ export default function WordMatchGame({ words, onCorrect, onWrong, onComplete }:
             {item.word}
           </button>
         ))}
+      </div>
       </div>
     </div>
   )

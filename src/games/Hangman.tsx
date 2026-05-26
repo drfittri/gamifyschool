@@ -48,6 +48,7 @@ export default function HangmanGame({ words, onCorrect, onWrong, onComplete }: P
 
   return (
     <div className="flex flex-col items-center gap-4 max-w-md mx-auto">
+      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Guess the letters to find the word!</p>
       <div className="text-3xl">{"😊🥺😟😰😱💀".charAt(Math.min(wrongs, 5))}</div>
       <div className="text-xs text-clay-text-muted font-semibold">Wrong guesses: {wrongs}/{maxWrongs}</div>
       <div className="text-6xl animate-float">{emoji}</div>
@@ -63,7 +64,7 @@ export default function HangmanGame({ words, onCorrect, onWrong, onComplete }: P
         ))}
       </div>
       {isLost && <div className="text-clay-error font-extrabold text-lg animate-wiggle">It was: <span className="text-clay-text">{word}</span></div>}
-      <div className="flex flex-wrap gap-1 justcenter max-w-[340px]">
+      <div className="flex flex-wrap gap-1 justify-center max-w-[340px]">
         {keys.map(l => {
           const used = guessed.has(l); const correct = word.includes(l) && guessed.has(l); const wrong = guessed.has(l) && !word.includes(l)
           return (

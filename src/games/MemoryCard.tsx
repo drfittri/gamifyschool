@@ -66,6 +66,8 @@ export default function MemoryCardGame({ words, onCorrect, onWrong, onComplete }
   const cols = pool.length <= 4 ? 4 : 4
 
   return (
+    <div className="flex flex-col items-center gap-4">
+      <p className="text-lg font-extrabold text-clay-text-muted text-center" style={{ fontFamily: 'var(--font-display)' }}>Flip two cards to find matching pairs!</p>
     <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${cols}, minmax(80px, 100px))` }}>
       {cards.map(card => (
         <button key={card.id} onClick={() => handleFlip(card.id)}
@@ -85,6 +87,7 @@ export default function MemoryCardGame({ words, onCorrect, onWrong, onComplete }
           )}
         </button>
       ))}
+      </div>
     </div>
   )
 }
