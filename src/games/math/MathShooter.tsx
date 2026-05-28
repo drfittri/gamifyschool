@@ -145,9 +145,9 @@ export default function MathShooter({ questions, unit, onCorrect, onWrong, onCom
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-5xl">{t.hero}🎯</div>
-        <h2 className="text-2xl font-extrabold">Sniper Strike!</h2>
-        <p className="font-semibold">Read the math question, then TAP the correct floating target.</p>
-        <button onClick={() => setShowHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Start ▶</button>
+        <h2 className="text-2xl font-extrabold">Tembak Sasaran!</h2>
+        <p className="font-semibold">Baca soalan matematik, kemudian KETIK sasaran yang betul.</p>
+        <button onClick={() => setShowHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Mula ▶</button>
       </div>
     )
   }
@@ -170,10 +170,10 @@ export default function MathShooter({ questions, unit, onCorrect, onWrong, onCom
       />
       {feedback && (
         <div className={`text-center font-extrabold text-2xl ${feedback === 'ok' ? 'text-green-500' : 'text-red-500'}`}>
-          {feedback === 'ok' ? '🎯 Hit!' : '❌ Missed!'}
+          {feedback === 'ok' ? '🎯 Kena!' : '❌ Tersasar!'}
         </div>
       )}
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Question {qIdx + 1} / {questions.length}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Soalan {qIdx + 1} / {questions.length}</p>
     </div>
   )
 }

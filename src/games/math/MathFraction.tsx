@@ -74,9 +74,9 @@ export default function MathFraction({ questions, unit, onCorrect, onWrong, onCo
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-6xl">🍕</div>
-        <h2 className="text-2xl font-extrabold">Pizza Slicer!</h2>
-        <p className="font-semibold">Pirates love pizza! Pick the fraction that matches the shaded slices.</p>
-        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Slice It! 🔪</button>
+        <h2 className="text-2xl font-extrabold">Potong Piza!</h2>
+        <p className="font-semibold">Lanun suka piza! Pilih pecahan yang padan dengan keping berlorek.</p>
+        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Potong! 🔪</button>
       </div>
     )
   }
@@ -103,7 +103,7 @@ export default function MathFraction({ questions, unit, onCorrect, onWrong, onCo
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Slice {qIdx + 1} / {total}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Hirisan {qIdx + 1} / {total}</p>
     </div>
   )
 }

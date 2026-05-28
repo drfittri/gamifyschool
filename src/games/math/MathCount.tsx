@@ -30,7 +30,7 @@ export default function MathCount({ questions, unit, onCorrect, onWrong, onCompl
   // for unit 1 count question, override display with theme emoji
   const display = useMemo(() => {
     if (!q) return ''
-    if (q.prompt.includes('Count') && q.display) {
+    if (q.prompt.includes('Kira') && q.display) {
       const matched = q.display.match(/.{1,2}/gu) || []
       return themeEmoji.repeat(Math.min(30, matched.length))
     }
@@ -57,9 +57,9 @@ export default function MathCount({ questions, unit, onCorrect, onWrong, onCompl
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-5xl">{themeEmoji.repeat(5)}</div>
-        <h2 className="text-2xl font-extrabold">Troop Count!</h2>
-        <p className="font-semibold">Count carefully. Tap the right number.</p>
-        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Begin 👀</button>
+        <h2 className="text-2xl font-extrabold">Kira Pasukan!</h2>
+        <p className="font-semibold">Kira dengan teliti. Ketik nombor yang betul.</p>
+        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Mula 👀</button>
       </div>
     )
   }
@@ -90,7 +90,7 @@ export default function MathCount({ questions, unit, onCorrect, onWrong, onCompl
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Question {qIdx + 1} / {total}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Soalan {qIdx + 1} / {total}</p>
     </div>
   )
 }

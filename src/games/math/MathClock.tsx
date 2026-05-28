@@ -49,7 +49,7 @@ export default function MathClock({ questions, unit, onCorrect, onWrong, onCompl
 
   const q = questions[qIdx]
   const total = questions.length
-  const isClock = q?.prompt.toLowerCase().includes('time')
+  const isClock = q?.prompt.toLowerCase().includes('waktu')
 
   const pick = (opt: string) => {
     if (lock || !q) return
@@ -68,9 +68,9 @@ export default function MathClock({ questions, unit, onCorrect, onWrong, onCompl
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-6xl">🕰️🛡️</div>
-        <h2 className="text-2xl font-extrabold">Clock Tower!</h2>
-        <p className="font-semibold">Defend the kingdom — read the clock, days and months. Wrong = lose a heart.</p>
-        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Defend ⚔️</button>
+        <h2 className="text-2xl font-extrabold">Menara Jam!</h2>
+        <p className="font-semibold">Pertahankan kerajaan — baca jam, hari dan bulan. Salah = hilang satu nyawa.</p>
+        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Pertahan ⚔️</button>
       </div>
     )
   }
@@ -100,7 +100,7 @@ export default function MathClock({ questions, unit, onCorrect, onWrong, onCompl
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Wave {qIdx + 1} / {total}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Gelombang {qIdx + 1} / {total}</p>
     </div>
   )
 }

@@ -61,9 +61,9 @@ export default function MathRace({ questions, unit, onCorrect, onWrong, onComple
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-6xl">{racer} 💨</div>
-        <h2 className="text-2xl font-extrabold">Speed Race!</h2>
-        <p className="font-semibold">Right answer = boost. Wrong = opponent zooms ahead. Beat them to the {finish} flag!</p>
-        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Race! 🏁</button>
+        <h2 className="text-2xl font-extrabold">Lumba Pantas!</h2>
+        <p className="font-semibold">Jawapan betul = pecut. Salah = lawan memintas. Kalahkan lawan ke bendera {finish}!</p>
+        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Berlumba! 🏁</button>
       </div>
     )
   }
@@ -102,7 +102,7 @@ export default function MathRace({ questions, unit, onCorrect, onWrong, onComple
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Lap {qIdx + 1} / {total}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Pusingan {qIdx + 1} / {total}</p>
     </div>
   )
 }

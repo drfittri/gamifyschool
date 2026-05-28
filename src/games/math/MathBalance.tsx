@@ -71,8 +71,8 @@ export default function MathBalance({ questions, unit, onCorrect, onWrong, onCom
     const sep = q.display?.includes('|') ? '|' : q.display?.includes('vs') ? 'vs' : '~'
     const parts = q.display?.split(sep) || ['1','1']
     const left = parseInt(parts[0]), right = parseInt(parts[1])
-    const type: 'length' | 'mass' | 'vol' = q.prompt.includes('LONG') || q.prompt.includes('SHORT') ? 'length'
-      : q.prompt.includes('HEAVI') || q.prompt.includes('LIGHT') ? 'mass' : 'vol'
+    const type: 'length' | 'mass' | 'vol' = q.prompt.includes('PANJANG') || q.prompt.includes('PENDEK') ? 'length'
+      : q.prompt.includes('BERAT') || q.prompt.includes('RINGAN') ? 'mass' : 'vol'
     return { left, right, type }
   })()
 
@@ -91,9 +91,9 @@ export default function MathBalance({ questions, unit, onCorrect, onWrong, onCom
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-6xl">⚖️🐮</div>
-        <h2 className="text-2xl font-extrabold">Farm Balance!</h2>
-        <p className="font-semibold">Compare lengths, weights and water jugs. Pick the right one to win the farmyard!</p>
-        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Compare 👀</button>
+        <h2 className="text-2xl font-extrabold">Penimbang Ladang!</h2>
+        <p className="font-semibold">Banding panjang, berat dan isi padu cecair. Pilih yang betul untuk menang!</p>
+        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Banding 👀</button>
       </div>
     )
   }
@@ -120,7 +120,7 @@ export default function MathBalance({ questions, unit, onCorrect, onWrong, onCom
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Round {qIdx + 1} / {total}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Pusingan {qIdx + 1} / {total}</p>
     </div>
   )
 }

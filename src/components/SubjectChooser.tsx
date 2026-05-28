@@ -16,7 +16,7 @@ const SUBJECTS: Subject[] = [
     route: '/english', bg: 'from-rose-400 via-pink-500 to-fuchsia-600', ring: 'ring-rose-300',
   },
   {
-    id: 'math', title: 'Mathematics', emoji: '🔢', tagline: 'Numbers, shapes & time',
+    id: 'math', title: 'Matematik', emoji: '🔢', tagline: 'Nombor, bentuk & masa',
     route: '/math', bg: 'from-blue-500 via-indigo-600 to-purple-700', ring: 'ring-blue-300',
   },
 ]

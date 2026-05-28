@@ -89,9 +89,9 @@ export default function MathShape({ questions, unit, onCorrect, onWrong, onCompl
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-6xl">🔷🚀</div>
-        <h2 className="text-2xl font-extrabold">Shape Squadron!</h2>
-        <p className="font-semibold">Pilot your rocket — identify the shape on screen to lock the target.</p>
-        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Launch 🚀</button>
+        <h2 className="text-2xl font-extrabold">Skuad Bentuk!</h2>
+        <p className="font-semibold">Terbangkan roket — kenal pasti bentuk di skrin untuk kunci sasaran.</p>
+        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Lancar 🚀</button>
       </div>
     )
   }
@@ -118,7 +118,7 @@ export default function MathShape({ questions, unit, onCorrect, onWrong, onCompl
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Target {qIdx + 1} / {total}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Sasaran {qIdx + 1} / {total}</p>
     </div>
   )
 }

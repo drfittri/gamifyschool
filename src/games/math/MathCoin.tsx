@@ -41,9 +41,9 @@ export default function MathCoin({ questions, unit, onCorrect, onWrong, onComple
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-6xl">🏴‍☠️🪙</div>
-        <h2 className="text-2xl font-extrabold">Coin Quest!</h2>
-        <p className="font-semibold">Read the price. Pay the right amount. Each right answer fills the treasure chest.</p>
-        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Hunt! 💰</button>
+        <h2 className="text-2xl font-extrabold">Cari Duit!</h2>
+        <p className="font-semibold">Baca harga. Bayar jumlah yang betul. Setiap jawapan betul mengisi peti harta karun.</p>
+        <button onClick={() => setHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Cari! 💰</button>
       </div>
     )
   }
@@ -72,7 +72,7 @@ export default function MathCoin({ questions, unit, onCorrect, onWrong, onComple
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Loot {qIdx + 1} / {total}</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Harta {qIdx + 1} / {total}</p>
     </div>
   )
 }

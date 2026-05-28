@@ -1,76 +1,69 @@
-// Mathematics Year 1 — content distilled from MATEMATIK JILID 1 & 2, MAT_AKTIVITI JILID 1 & 2
-// Source: NotebookLM notebook c70c41ca-f133-46ef-8c32-069cda21c7f8
+// Matematik Tahun 1 — kandungan dari MATEMATIK JILID 1 & 2, MAT_AKTIVITI JILID 1 & 2
+// Sumber: NotebookLM notebook c70c41ca-f133-46ef-8c32-069cda21c7f8
 
 export interface MathUnit {
   unit: number
-  title: string          // English
-  titleMy: string        // Original Malay
+  title: string          // Malay (utama)
+  titleEn: string        // English ref
   emoji: string
-  theme: MathTheme       // visual theme for games
+  theme: MathTheme
   concepts: string[]
-  games: string[]        // game ids enabled for this unit
+  games: string[]
 }
 
 export type MathTheme =
-  | 'army'        // soldiers / tanks
-  | 'jet'         // fighter jets
-  | 'rocket'      // space / rockets
-  | 'race'        // race cars
-  | 'animal'      // jungle adventure
-  | 'pirate'      // treasure
-  | 'knight'      // medieval
-  | 'farm'        // farm
+  | 'army' | 'jet' | 'rocket' | 'race' | 'animal' | 'pirate' | 'knight' | 'farm'
 
 export const MATH_UNITS: MathUnit[] = [
   {
-    unit: 1, title: 'Numbers to 100', titleMy: 'Nombor Hingga 100', emoji: '🔢', theme: 'army',
-    concepts: ['count 0-100', 'place value', 'more or less', 'order', 'patterns', 'rounding'],
+    unit: 1, title: 'Nombor Hingga 100', titleEn: 'Numbers to 100', emoji: '🔢', theme: 'army',
+    concepts: ['kira 0–100', 'nilai tempat', 'lebih atau kurang', 'susunan nombor', 'pola nombor', 'bundar'],
     games: ['mcount', 'mrocket', 'mshooter'],
   },
   {
-    unit: 2, title: 'Add & Subtract', titleMy: 'Tambah dan Tolak', emoji: '➕', theme: 'jet',
-    concepts: ['addition to 100', 'subtraction to 100', 'word problems', 'repeated addition'],
+    unit: 2, title: 'Tambah dan Tolak', titleEn: 'Add & Subtract', emoji: '➕', theme: 'jet',
+    concepts: ['tambah hingga 100', 'tolak hingga 100', 'cerita matematik', 'tambah berulang'],
     games: ['mshooter', 'mrace', 'mrocket'],
   },
   {
-    unit: 3, title: 'Fractions', titleMy: 'Pecahan', emoji: '🍕', theme: 'pirate',
-    concepts: ['half', 'quarter', 'identify shaded parts'],
+    unit: 3, title: 'Pecahan', titleEn: 'Fractions', emoji: '🍕', theme: 'pirate',
+    concepts: ['separuh', 'suku', 'kenal bahagian berlorek'],
     games: ['mfraction', 'mshooter', 'mrace'],
   },
   {
-    unit: 4, title: 'Money', titleMy: 'Wang', emoji: '💰', theme: 'pirate',
-    concepts: ['ringgit & sen', 'coin values', 'add money', 'change'],
+    unit: 4, title: 'Wang', titleEn: 'Money', emoji: '💰', theme: 'pirate',
+    concepts: ['ringgit & sen', 'nilai duit syiling', 'tambah wang', 'baki'],
     games: ['mcoin', 'mshooter', 'mcount'],
   },
   {
-    unit: 5, title: 'Time', titleMy: 'Masa dan Waktu', emoji: '⏰', theme: 'knight',
-    concepts: ['read clock to hour', 'half past', 'days of week', 'months'],
+    unit: 5, title: 'Masa dan Waktu', titleEn: 'Time', emoji: '⏰', theme: 'knight',
+    concepts: ['baca jam', 'setengah jam', 'hari dalam minggu', 'bulan dalam tahun'],
     games: ['mclock', 'mrace', 'mshooter'],
   },
   {
-    unit: 6, title: 'Length, Mass, Volume', titleMy: 'Panjang, Jisim, Isi Padu', emoji: '⚖️', theme: 'farm',
-    concepts: ['compare length', 'mass on scale', 'liquid volume'],
+    unit: 6, title: 'Panjang, Jisim, Isi Padu', titleEn: 'Length, Mass, Volume', emoji: '⚖️', theme: 'farm',
+    concepts: ['banding panjang', 'jisim objek', 'isi padu cecair'],
     games: ['mbalance', 'mrace', 'mshooter'],
   },
   {
-    unit: 7, title: 'Shapes', titleMy: 'Bentuk', emoji: '🔷', theme: 'rocket',
-    concepts: ['2D shapes', '3D shapes', 'patterns'],
+    unit: 7, title: 'Bentuk', titleEn: 'Shapes', emoji: '🔷', theme: 'rocket',
+    concepts: ['bentuk 2D', 'bentuk 3D', 'pola bentuk'],
     games: ['mshape', 'mshooter', 'mrocket'],
   },
   {
-    unit: 8, title: 'Data', titleMy: 'Data', emoji: '📊', theme: 'animal',
-    concepts: ['pictograph', 'count and compare'],
+    unit: 8, title: 'Data', titleEn: 'Data', emoji: '📊', theme: 'animal',
+    concepts: ['piktograf', 'kira dan banding'],
     games: ['mcount', 'mshooter', 'mrace'],
   },
 ]
 
-// ---------- Question generators per unit ----------
+// ---------- Penjana soalan ----------
 
 export interface MathQuestion {
-  prompt: string        // text shown
-  display?: string      // optional visual (emoji or special)
-  options: string[]     // multiple choice strings
-  answer: string        // correct option (must be in options)
+  prompt: string
+  display?: string
+  options: string[]
+  answer: string
   hint?: string
 }
 
@@ -92,54 +85,49 @@ function withDistractors(answer: number, range: [number,number], count = 3): str
   return shuffle(Array.from(opts).map(String))
 }
 
-// Unit 1 — Numbers to 100
+// Unit 1 — Nombor Hingga 100
 export function genUnit1(n = 8): MathQuestion[] {
   const out: MathQuestion[] = []
   for (let i = 0; i < n; i++) {
     const r = rand(5)
     if (r === 0) {
-      // count emoji
       const count = 1 + rand(20)
       const emo = pick(['⭐','🍎','🎈','🦋','🐝','🚗','🪖'])
-      out.push({ prompt: 'Count them!', display: emo.repeat(count), options: withDistractors(count, [1, 25]), answer: String(count) })
+      out.push({ prompt: 'Kira berapa banyak!', display: emo.repeat(count), options: withDistractors(count, [1, 25]), answer: String(count) })
     } else if (r === 1) {
-      // more / less
       const a = 5 + rand(90), b = 5 + rand(90)
       if (a === b) { i--; continue }
       const more = Math.random() < 0.5
       out.push({
-        prompt: more ? `Which is MORE?` : `Which is LESS?`,
+        prompt: more ? 'Yang mana LEBIH?' : 'Yang mana KURANG?',
         options: shuffle([String(a), String(b)]),
         answer: String(more ? Math.max(a,b) : Math.min(a,b)),
       })
     } else if (r === 2) {
-      // place value
       const n2 = 11 + rand(89)
       const tens = Math.floor(n2/10), ones = n2 % 10
       const askTens = Math.random() < 0.5
       out.push({
-        prompt: `In ${n2}, what is the ${askTens ? 'TENS' : 'ONES'} digit?`,
+        prompt: `Dalam ${n2}, apakah digit ${askTens ? 'PULUH' : 'SA'}?`,
         options: withDistractors(askTens ? tens : ones, [0, 9]),
         answer: String(askTens ? tens : ones),
       })
     } else if (r === 3) {
-      // pattern (counting by 1,2,5,10)
       const step = pick([1, 2, 5, 10])
       const start = 1 + rand(50)
       const seq = [start, start+step, start+2*step]
       const ans = start + 3*step
       out.push({
-        prompt: `What comes next?  ${seq.join(', ')}, ___`,
+        prompt: `Apakah nombor seterusnya?  ${seq.join(', ')}, ___`,
         options: withDistractors(ans, [0, 100]),
         answer: String(ans),
       })
     } else {
-      // round to nearest 10
       const n2 = 11 + rand(88)
       const ans = Math.round(n2/10)*10
       out.push({
-        prompt: `Round ${n2} to nearest 10`,
-        options: withDistractors(ans, [0, 100]).map(s => s),
+        prompt: `Bundarkan ${n2} kepada puluh terdekat`,
+        options: withDistractors(ans, [0, 100]),
         answer: String(ans),
       })
     }
@@ -147,7 +135,7 @@ export function genUnit1(n = 8): MathQuestion[] {
   return out
 }
 
-// Unit 2 — Add & Subtract
+// Unit 2 — Tambah & Tolak
 export function genUnit2(n = 8): MathQuestion[] {
   const out: MathQuestion[] = []
   for (let i = 0; i < n; i++) {
@@ -165,8 +153,7 @@ export function genUnit2(n = 8): MathQuestion[] {
   return out
 }
 
-// Unit 3 — Fractions
-export interface FractionQ { num: number; den: number }
+// Unit 3 — Pecahan
 export function genUnit3(n = 6): MathQuestion[] {
   const out: MathQuestion[] = []
   const fracs: [number,number][] = [[1,2],[1,4],[2,4],[3,4],[1,3],[2,3]]
@@ -179,7 +166,7 @@ export function genUnit3(n = 6): MathQuestion[] {
       if (s !== `${num}/${den}` && !distract.includes(s)) distract.push(s)
     }
     out.push({
-      prompt: 'What fraction is shaded?',
+      prompt: 'Pecahan manakah berlorek?',
       display: `${num}/${den}`,
       options: shuffle([`${num}/${den}`, ...distract]),
       answer: `${num}/${den}`,
@@ -188,52 +175,48 @@ export function genUnit3(n = 6): MathQuestion[] {
   return out
 }
 
-// Unit 4 — Money (RM)
+// Unit 4 — Wang (RM)
 export function genUnit4(n = 8): MathQuestion[] {
   const out: MathQuestion[] = []
-  const coins = [5, 10, 20, 50] // sen
-  const notes = [1, 5, 10] // ringgit
+  const coins = [5, 10, 20, 50]
+  const notes = [1, 5, 10]
   for (let i = 0; i < n; i++) {
     const r = rand(3)
     if (r === 0) {
-      // sum coins
       const c1 = pick(coins), c2 = pick(coins)
       const ans = c1 + c2
       out.push({
-        prompt: `${c1}¢ + ${c2}¢ = ?`,
-        options: withDistractors(ans, [5, 200]).map(s => `${s}¢`),
-        answer: `${ans}¢`,
+        prompt: `${c1} sen + ${c2} sen = ?`,
+        options: withDistractors(ans, [5, 200]).map(s => `${s} sen`),
+        answer: `${ans} sen`,
       })
     } else if (r === 1) {
-      // value: how many sen in RMx
       const rm = pick(notes)
       const ans = rm * 100
       out.push({
         prompt: `RM${rm} = ? sen`,
-        options: withDistractors(ans, [50, 1500]).map(s => s),
+        options: withDistractors(ans, [50, 1500]),
         answer: String(ans),
       })
     } else {
-      // change
       const paid = pick(notes)
       const cost = 10 + rand((paid*100) - 20)
       const ans = paid*100 - cost
       out.push({
-        prompt: `Cost ${cost}¢. Paid RM${paid}. Change = ?`,
-        options: withDistractors(ans, [5, paid*100]).map(s => `${s}¢`),
-        answer: `${ans}¢`,
+        prompt: `Harga ${cost} sen. Bayar RM${paid}. Baki = ?`,
+        options: withDistractors(ans, [5, paid*100]).map(s => `${s} sen`),
+        answer: `${ans} sen`,
       })
     }
   }
   return out
 }
 
-// Unit 5 — Time
-export interface ClockQ { hour: number; minute: number }
+// Unit 5 — Masa
 export function genUnit5(n = 6): MathQuestion[] {
   const out: MathQuestion[] = []
-  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-  const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+  const days = ['Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu','Ahad']
+  const months = ['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember']
   for (let i = 0; i < n; i++) {
     const r = rand(3)
     if (r === 0) {
@@ -244,34 +227,33 @@ export function genUnit5(n = 6): MathQuestion[] {
       const others = uniq([1+rand(12), 1+rand(12), 1+rand(12)]).filter(x => x !== h).slice(0,3)
         .map(x => `${x}:${(Math.random()<0.5?0:30).toString().padStart(2,'0')}`)
       while (others.length < 3) others.push(`${1+rand(12)}:00`)
-      out.push({ prompt: 'What time is shown?', display: ans, options: shuffle([ans, ...others.slice(0,3)]), answer: ans })
+      out.push({ prompt: 'Apakah waktu ditunjukkan?', display: ans, options: shuffle([ans, ...others.slice(0,3)]), answer: ans })
     } else if (r === 1) {
       const idx = rand(7)
       const ans = days[idx]
       const others = shuffle(days.filter(d => d !== ans)).slice(0,3)
-      out.push({ prompt: `What day comes AFTER ${days[(idx+6)%7]}?`, options: shuffle([ans, ...others]), answer: ans })
+      out.push({ prompt: `Hari apakah SELEPAS ${days[(idx+6)%7]}?`, options: shuffle([ans, ...others]), answer: ans })
     } else {
       const idx = rand(11)
       const ans = months[idx+1]
       const others = shuffle(months.filter(m => m !== ans)).slice(0,3)
-      out.push({ prompt: `What month comes AFTER ${months[idx]}?`, options: shuffle([ans, ...others]), answer: ans })
+      out.push({ prompt: `Bulan apakah SELEPAS ${months[idx]}?`, options: shuffle([ans, ...others]), answer: ans })
     }
   }
   return out
 }
 
-// Unit 6 — Length / Mass / Volume
+// Unit 6 — Panjang, Jisim, Isi Padu
 export function genUnit6(n = 8): MathQuestion[] {
   const out: MathQuestion[] = []
   for (let i = 0; i < n; i++) {
     const r = rand(3)
     if (r === 0) {
-      // longer/shorter
       const a = 1 + rand(20), b = 1 + rand(20)
       if (a === b) { i--; continue }
       const longer = Math.random() < 0.5
       out.push({
-        prompt: longer ? 'Which is LONGER?' : 'Which is SHORTER?',
+        prompt: longer ? 'Yang mana LEBIH PANJANG?' : 'Yang mana LEBIH PENDEK?',
         display: `${a}|${b}`,
         options: shuffle([`${a} cm`, `${b} cm`]),
         answer: longer ? `${Math.max(a,b)} cm` : `${Math.min(a,b)} cm`,
@@ -281,7 +263,7 @@ export function genUnit6(n = 8): MathQuestion[] {
       if (a === b) { i--; continue }
       const heavier = Math.random() < 0.5
       out.push({
-        prompt: heavier ? 'Which is HEAVIER?' : 'Which is LIGHTER?',
+        prompt: heavier ? 'Yang mana LEBIH BERAT?' : 'Yang mana LEBIH RINGAN?',
         display: `${a}vs${b}`,
         options: shuffle([`${a} kg`, `${b} kg`]),
         answer: heavier ? `${Math.max(a,b)} kg` : `${Math.min(a,b)} kg`,
@@ -291,7 +273,7 @@ export function genUnit6(n = 8): MathQuestion[] {
       if (a === b) { i--; continue }
       const more = Math.random() < 0.5
       out.push({
-        prompt: more ? 'Which holds MORE water?' : 'Which holds LESS water?',
+        prompt: more ? 'Yang mana ISI PADU LEBIH?' : 'Yang mana ISI PADU KURANG?',
         display: `${a}~${b}`,
         options: shuffle([`${a} L`, `${b} L`]),
         answer: more ? `${Math.max(a,b)} L` : `${Math.min(a,b)} L`,
@@ -301,7 +283,11 @@ export function genUnit6(n = 8): MathQuestion[] {
   return out
 }
 
-// Unit 7 — Shapes
+// Unit 7 — Bentuk
+export const SHAPE_NAMES_MY: Record<string, string> = {
+  circle: 'bulatan', square: 'segi empat sama', triangle: 'segi tiga', rectangle: 'segi empat tepat', star: 'bintang', heart: 'hati',
+  cube: 'kubus', sphere: 'sfera', cone: 'kon', cylinder: 'silinder', pyramid: 'piramid',
+}
 export const SHAPES_2D = ['circle','square','triangle','rectangle','star','heart']
 export const SHAPES_3D = ['cube','sphere','cone','cylinder','pyramid']
 export function genUnit7(n = 8): MathQuestion[] {
@@ -311,17 +297,18 @@ export function genUnit7(n = 8): MathQuestion[] {
     const pool = is3d ? SHAPES_3D : SHAPES_2D
     const ans = pick(pool)
     const others = shuffle(pool.filter(s => s !== ans)).slice(0,3)
+    const opts = shuffle([ans, ...others]).map(s => SHAPE_NAMES_MY[s] || s)
     out.push({
-      prompt: 'What shape is this?',
+      prompt: 'Apakah bentuk ini?',
       display: ans,
-      options: shuffle([ans, ...others]),
-      answer: ans,
+      options: opts,
+      answer: SHAPE_NAMES_MY[ans] || ans,
     })
   }
   return out
 }
 
-// Unit 8 — Data (pictograph)
+// Unit 8 — Data
 export function genUnit8(n = 6): MathQuestion[] {
   const out: MathQuestion[] = []
   const animals = ['🐶','🐱','🐰','🐸','🐯','🐵']
@@ -330,10 +317,9 @@ export function genUnit8(n = 6): MathQuestion[] {
     const r = rand(3)
     const display = animals.slice(0,3).map((a, j) => `${a}${' '+a.repeat(counts[j]-1)}`).join('|')
     if (r === 0) {
-      // most
       const idx = counts.indexOf(Math.max(...counts))
       out.push({
-        prompt: 'Which has the MOST?',
+        prompt: 'Yang mana PALING BANYAK?',
         display,
         options: shuffle(animals.slice(0,3)),
         answer: animals[idx],
@@ -341,7 +327,7 @@ export function genUnit8(n = 6): MathQuestion[] {
     } else if (r === 1) {
       const idx = counts.indexOf(Math.min(...counts))
       out.push({
-        prompt: 'Which has the LEAST?',
+        prompt: 'Yang mana PALING SEDIKIT?',
         display,
         options: shuffle(animals.slice(0,3)),
         answer: animals[idx],
@@ -349,7 +335,7 @@ export function genUnit8(n = 6): MathQuestion[] {
     } else {
       const idx = rand(3)
       out.push({
-        prompt: `How many ${animals[idx]} ?`,
+        prompt: `Berapa banyak ${animals[idx]}?`,
         display,
         options: withDistractors(counts[idx], [1, 10]),
         answer: String(counts[idx]),
@@ -373,26 +359,26 @@ export function generateQuestions(unitIdx: number, n = 8): MathQuestion[] {
   }
 }
 
-// ---------- Game definitions ----------
+// ---------- Definisi permainan ----------
 
 export interface MathGameDef {
   id: string
   title: string
   emoji: string
   description: string
-  themeNote: string  // dynamic theme adapts per unit
+  themeNote: string
 }
 
 export const MATH_GAMES: MathGameDef[] = [
-  { id: 'mshooter',  title: 'Sniper Strike',   emoji: '🎯', description: 'Shoot the right answer!',     themeNote: 'army/jet target shooter' },
-  { id: 'mrocket',   title: 'Rocket Launch',   emoji: '🚀', description: 'Fuel the rocket — answer fast!', themeNote: 'space rocket' },
-  { id: 'mrace',     title: 'Speed Race',      emoji: '🏎️', description: 'Race to the finish line!',    themeNote: 'race car' },
-  { id: 'mcount',    title: 'Troop Count',     emoji: '🪖', description: 'Count the soldiers / coins / animals!', themeNote: 'counting' },
-  { id: 'mfraction', title: 'Pizza Slicer',    emoji: '🍕', description: 'Match the fraction slice!',   themeNote: 'fraction pie' },
-  { id: 'mcoin',     title: 'Coin Quest',      emoji: '🪙', description: 'Pay & collect RM coins!',     themeNote: 'money RM' },
-  { id: 'mclock',    title: 'Clock Tower',     emoji: '🕰️', description: 'Defend the clock tower!',     themeNote: 'time' },
-  { id: 'mbalance',  title: 'Balance Scale',   emoji: '⚖️', description: 'Tip the scale right!',        themeNote: 'compare' },
-  { id: 'mshape',    title: 'Shape Squadron',  emoji: '🔷', description: 'Identify the shape!',         themeNote: 'shapes' },
+  { id: 'mshooter',  title: 'Tembak Sasaran', emoji: '🎯', description: 'Tembak jawapan yang betul!',           themeNote: 'penembak askar/jet' },
+  { id: 'mrocket',   title: 'Lancar Roket',   emoji: '🚀', description: 'Isi bahan api — jawab pantas!',         themeNote: 'roket angkasa' },
+  { id: 'mrace',     title: 'Lumba Pantas',   emoji: '🏎️', description: 'Berlumba ke garisan penamat!',          themeNote: 'lumba kereta' },
+  { id: 'mcount',    title: 'Kira Pasukan',   emoji: '🪖', description: 'Kira askar / duit / haiwan!',           themeNote: 'mengira' },
+  { id: 'mfraction', title: 'Potong Piza',    emoji: '🍕', description: 'Padankan pecahan piza!',                themeNote: 'pecahan' },
+  { id: 'mcoin',     title: 'Cari Duit',      emoji: '🪙', description: 'Bayar & kumpul duit RM!',               themeNote: 'wang RM' },
+  { id: 'mclock',    title: 'Menara Jam',     emoji: '🕰️', description: 'Pertahankan menara jam!',               themeNote: 'masa' },
+  { id: 'mbalance',  title: 'Penimbang',      emoji: '⚖️', description: 'Bandingkan dengan betul!',              themeNote: 'banding' },
+  { id: 'mshape',    title: 'Skuad Bentuk',   emoji: '🔷', description: 'Kenal pasti bentuk!',                   themeNote: 'bentuk' },
 ]
 
 export function gamesForUnit(unitIdx: number): MathGameDef[] {

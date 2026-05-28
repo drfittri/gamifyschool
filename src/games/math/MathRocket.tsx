@@ -49,9 +49,9 @@ export default function MathRocket({ questions, unit, onCorrect, onWrong, onComp
     return (
       <div className="w-full max-w-md mx-auto rounded-3xl p-6 text-white text-center space-y-4" style={{ background: t.bg }}>
         <div className="text-6xl animate-bounce">🚀</div>
-        <h2 className="text-2xl font-extrabold">Rocket Launch!</h2>
-        <p className="font-semibold">Each correct answer = +1 altitude. Reach orbit by answering every question right.</p>
-        <button onClick={() => setShowHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Ignite 🔥</button>
+        <h2 className="text-2xl font-extrabold">Lancar Roket!</h2>
+        <p className="font-semibold">Setiap jawapan betul = +1 altitud. Capai orbit dengan jawab semua soalan dengan betul.</p>
+        <button onClick={() => setShowHelp(false)} className="bg-white text-black font-extrabold px-6 py-3 rounded-2xl">Nyala 🔥</button>
       </div>
     )
   }
@@ -103,7 +103,7 @@ export default function MathRocket({ questions, unit, onCorrect, onWrong, onComp
           </button>
         ))}
       </div>
-      <p className="text-clay-text-muted text-sm text-center font-semibold">Altitude {altitude} / {total} — keep climbing!</p>
+      <p className="text-clay-text-muted text-sm text-center font-semibold">Altitud {altitude} / {total} — terus naik!</p>
     </div>
   )
 }

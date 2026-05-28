@@ -80,36 +80,36 @@ function MathDashboard({ stats }: { stats: any }) {
             </button>
             <div>
               <h1 className="text-3xl font-extrabold text-clay-text leading-tight" style={{ fontFamily: 'var(--font-display)' }}>🎓 GamifySchool</h1>
-              <p className="text-clay-text-muted text-sm font-semibold ml-1">🔢 Mathematics Year 1</p>
+              <p className="text-clay-text-muted text-sm font-semibold ml-1">🔢 Matematik Tahun 1</p>
             </div>
           </div>
           <button onClick={() => setTab(t => t === 'games' ? 'badges' : 'games')}
             className="clay-card-interactive px-4 py-2.5 text-sm font-bold text-clay-text flex items-center gap-2">
             {tab === 'games'
-              ? <><Trophy className="w-5 h-5 text-clay-yellow" strokeWidth={2.5} />Honours ({earned.length})</>
-              : <><BookOpen className="w-5 h-5 text-clay-primary" strokeWidth={2.5} />Games</>}
+              ? <><Trophy className="w-5 h-5 text-clay-yellow" strokeWidth={2.5} />Pingat ({earned.length})</>
+              : <><BookOpen className="w-5 h-5 text-clay-primary" strokeWidth={2.5} />Permainan</>}
           </button>
         </div>
         <LevelBar xp={stats.xp} />
         <div className="flex gap-5 mt-2 text-clay-text-muted text-sm font-bold pl-1">
-          <span>🔥 Best: {stats.maxStreak}</span>
-          <span>⭐ Perfect: {stats.perfectScores}</span>
-          <span>🏆 Level {currentLevel}</span>
+          <span>🔥 Terbaik: {stats.maxStreak}</span>
+          <span>⭐ Sempurna: {stats.perfectScores}</span>
+          <span>🏆 Tahap {currentLevel}</span>
         </div>
       </header>
 
       <main className="flex-1 px-4 pb-8 overflow-auto">
         {tab === 'badges' ? (
           <div className="animate-slide-up space-y-4">
-            <h2 className="text-2xl font-extrabold text-clay-text text-center" style={{ fontFamily: 'var(--font-display)' }}>🏆 Battle Honours</h2>
+            <h2 className="text-2xl font-extrabold text-clay-text text-center" style={{ fontFamily: 'var(--font-display)' }}>🏆 Pingat Pencapaian</h2>
             <BadgeGrid stats={stats} />
           </div>
         ) : (
           <div className="animate-slide-up space-y-4">
             <div className="text-center mb-2">
               <div className="text-5xl mb-2 animate-sway">🗺️</div>
-              <h2 className="text-2xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Pick a Mission!</h2>
-              <p className="text-clay-text-muted font-semibold">8 math units, themed adventures 🪖🚀⚔️</p>
+              <h2 className="text-2xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Pilih Misi!</h2>
+              <p className="text-clay-text-muted font-semibold">8 unit matematik, pengembaraan bertema 🪖🚀⚔️</p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {MATH_UNITS.map((u, i) => (
@@ -118,7 +118,7 @@ function MathDashboard({ stats }: { stats: any }) {
                   <div className="text-5xl mb-2">{u.emoji}</div>
                   <span className="text-clay-text-muted text-xs font-extrabold">Unit {u.unit}</span>
                   <p className="text-clay-text font-extrabold text-base leading-tight mt-0.5" style={{ fontFamily: 'var(--font-display)' }}>{u.title}</p>
-                  <span className="text-clay-text-muted/70 text-xs font-semibold">{u.games.length} games</span>
+                  <span className="text-clay-text-muted/70 text-xs font-semibold">{u.games.length} permainan</span>
                 </button>
               ))}
             </div>
@@ -143,19 +143,19 @@ function MathLessonView() {
   return (
     <div className="min-h-screen bg-clay-bg bg-stars p-4">
       <button onClick={() => navigate('/math')} className="flex items-center gap-1 text-clay-text font-bold text-lg mb-3 hover:text-clay-primary">
-        <ArrowLeft className="w-6 h-6" strokeWidth={2.5} /> Math Home
+        <ArrowLeft className="w-6 h-6" strokeWidth={2.5} /> Laman Matematik
       </button>
       <div className="clay-card p-6 mb-5">
         <span className="inline-block bg-clay-primary-light/20 text-clay-primary font-extrabold text-sm px-3 py-1 rounded-full mb-2">Unit {unit.unit}</span>
         <h2 className="text-4xl font-extrabold text-clay-text mb-1" style={{ fontFamily: 'var(--font-display)' }}>{unit.emoji} {unit.title}</h2>
-        <p className="text-clay-text-muted text-sm font-semibold italic mb-3">{unit.titleMy}</p>
+        <p className="text-clay-text-muted text-sm font-semibold italic mb-3">{unit.titleEn}</p>
         <div className="flex flex-wrap gap-2">
           {unit.concepts.map(c => (
             <span key={c} className="bg-clay-surface text-clay-text px-3 py-1.5 rounded-xl text-sm font-bold">{c}</span>
           ))}
         </div>
       </div>
-      <h3 className="text-2xl font-extrabold text-clay-text mb-3" style={{ fontFamily: 'var(--font-display)' }}>🎮 Pick a Game!</h3>
+      <h3 className="text-2xl font-extrabold text-clay-text mb-3" style={{ fontFamily: 'var(--font-display)' }}>🎮 Pilih Permainan!</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {games.map(g => (
           <button key={g.id} onClick={() => { playGameStart(); navigate(`/math/play/${idx}/${g.id}`) }}
@@ -243,22 +243,22 @@ function MathGameView({ addCorrect, addWrong, addPerfect }: { addCorrect: () => 
           <div className="clay-card p-8 text-center animate-bounce-in max-w-md w-full space-y-5">
             <div className="text-8xl animate-sway">{pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪'}</div>
             <h2 className="text-4xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
-              {pct >= 80 ? '🎉 Amazing!' : pct >= 50 ? '👏 Good Job!' : '💪 Keep Going!'}
+              {pct >= 80 ? '🎉 Hebat!' : pct >= 50 ? '👏 Syabas!' : '💪 Cuba Lagi!'}
             </h2>
             <div className="flex justify-center gap-3">
               {[pct >= 20 || correct > 0, pct >= 60, pct >= 90].map((earnedStar, i) => (
                 <span key={i} className={`text-5xl ${earnedStar ? 'animate-bounce-in' : 'opacity-20 grayscale'}`} style={{ animationDelay: `${i*0.18}s` }}>⭐</span>
               ))}
             </div>
-            <p className="text-xl text-clay-text-muted font-bold">{correct} correct of {total}</p>
+            <p className="text-xl text-clay-text-muted font-bold">{correct} betul daripada {total}</p>
             <div className="bg-amber-50 border-3 border-amber-200 rounded-2xl py-3 px-6 inline-flex items-center gap-2">
               <span className="text-3xl">⭐</span>
               <span className="text-3xl font-extrabold text-amber-600">+{xp} XP</span>
             </div>
             <div className="flex gap-3 justify-center mt-2">
-              <button onClick={() => navigate(`/math/play/${idx}`)} className="clay-card-interactive px-6 py-3 font-extrabold text-clay-text text-lg border-3 border-white/80">🎮 More Games</button>
+              <button onClick={() => navigate(`/math/play/${idx}`)} className="clay-card-interactive px-6 py-3 font-extrabold text-clay-text text-lg border-3 border-white/80">🎮 Lain Permainan</button>
               <button onClick={() => { setCorrect(0); setWrong(0); setDone(false); setCombo(0) }} className="clay-button px-6 py-3 text-lg flex items-center gap-2">
-                <RefreshCw className="w-5 h-5" strokeWidth={2.5} /> Play Again
+                <RefreshCw className="w-5 h-5" strokeWidth={2.5} /> Main Lagi
               </button>
             </div>
           </div>
