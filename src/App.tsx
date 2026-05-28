@@ -28,6 +28,8 @@ import PhonicsRocket from './games/PhonicsRocket'
 import ComprehensionMap from './games/ComprehensionMap'
 import JetFighterGame from './games/JetFighter'
 import { playGameStart } from './hooks/useSound'
+import SubjectChooser from './components/SubjectChooser'
+import MathApp from './MathApp'
 
 const gameComponents: Record<string, any> = {
   wordmatch: WordMatchGame, spellingbee: SpellingBeeGame, wordscramble: WordScrambleGame,
@@ -56,11 +58,13 @@ function App() {
     <HashRouter>
       {showConfetti && <Confetti />}
       <Routes>
-        <Route path="/" element={<Dashboard stats={stats} />} />
-        <Route path="/play/:unitIndex" element={<LessonView />} />
-        <Route path="/play/:unitIndex/:gameId" element={
+        <Route path="/" element={<SubjectChooser />} />
+        <Route path="/english" element={<Dashboard stats={stats} />} />
+        <Route path="/english/play/:unitIndex" element={<LessonView />} />
+        <Route path="/english/play/:unitIndex/:gameId" element={
           <GameView addCorrectAnswer={addCorrectAnswer} addWrongAnswer={addWrongAnswer} addPerfectScore={addPerfectScore} />
         } />
+        <Route path="/math/*" element={<MathApp />} />
       </Routes>
     </HashRouter>
   )
@@ -90,11 +94,16 @@ function Dashboard({ stats }: { stats: any }) {
         }} />
 
         <div className="flex items-center justify-between mb-3 mt-1">
-          <div>
-            <h1 className="text-3xl font-extrabold text-clay-text leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              🎓 GamifySchool
-            </h1>
-            <p className="text-clay-text-muted text-sm font-semibold ml-1">✏️ English Year 1</p>
+          <div className="flex items-center gap-2">
+            <button onClick={() => navigate('/')} className="w-10 h-10 rounded-2xl bg-clay-surface flex items-center justify-center hover:scale-110 active:scale-95">
+              <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
+            </button>
+            <div>
+              <h1 className="text-3xl font-extrabold text-clay-text leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
+                🎓 GamifySchool
+              </h1>
+              <p className="text-clay-text-muted text-sm font-semibold ml-1">✏️ English Year 1</p>
+            </div>
           </div>
           <button
             onClick={() => setTab(t => t === 'games' ? 'badges' : 'games')}
@@ -127,8 +136,8 @@ function Dashboard({ stats }: { stats: any }) {
           </div>
         ) : (
           <GamePicker
-            onSelectUnit={(i) => navigate(`/play/${i}`)}
-            onSelectGame={(game: GameDefinition, unit: number) => navigate(`/play/${unit}/${game.id}`)}
+            onSelectUnit={(i) => navigate(`/english/play/${i}`)}
+            onSelectGame={(game: GameDefinition, unit: number) => navigate(`/english/play/${unit}/${game.id}`)}
             unitIndex={null}
           />
         )}
@@ -157,12 +166,12 @@ function LessonView() {
 
   const handleGame = (game: GameDefinition) => {
     playGameStart()
-    navigate(`/play/${idx}/${game.id}`)
+    navigate(`/english/play/${idx}/${game.id}`)
   }
 
   return (
     <div className="min-h-screen bg-clay-bg bg-stars p-4">
-      <button onClick={() => navigate('/')} className="flex items-center gap-1 text-clay-text font-bold text-lg mb-3 hover:text-clay-primary transition-colors">
+      <button onClick={() => navigate('/english')} className="flex items-center gap-1 text-clay-text font-bold text-lg mb-3 hover:text-clay-primary transition-colors">
         <ArrowLeft className="w-6 h-6" strokeWidth={2.5} /> Home
       </button>
 
@@ -266,7 +275,7 @@ function GameView({
         {/* Title row */}
         <div className="px-4 pt-3 pb-1 flex items-center justify-between">
           <button
-            onClick={() => navigate(`/play/${idx}`)}
+            onClick={() => navigate(`/english/play/${idx}`)}
             className="w-10 h-10 rounded-2xl bg-clay-surface flex items-center justify-center hover:scale-110 transition-all active:scale-95"
           >
             <ArrowLeft className="w-5 h-5 text-clay-text" strokeWidth={2.5} />
@@ -345,14 +354,14 @@ function GameView({
 
             <div className="flex gap-3 justify-center mt-2">
               <button
-                onClick={() => navigate(`/play/${idx}`)}
+                onClick={() => navigate(`/english/play/${idx}`)}
                 className="clay-card-interactive px-6 py-3 font-extrabold text-clay-text text-lg border-3 border-white/80"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
                 🎮 More Games
               </button>
               <button
-                onClick={() => navigate(`/play/${idx}/${gameId}`)}
+                onClick={() => navigate(`/english/play/${idx}/${gameId}`)}
                 className="clay-button px-6 py-3 text-lg flex items-center gap-2"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
