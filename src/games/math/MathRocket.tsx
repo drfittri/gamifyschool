@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { playCorrect, playWrong } from '../../hooks/useSound'
 import { themeOf } from './themeUtil'
 import type { MathQuestion, MathUnit } from '../../data/math'
@@ -19,10 +19,15 @@ export default function MathRocket({ questions, unit, onCorrect, onWrong, onComp
   const [lock, setLock] = useState(false)
   const [shake, setShake] = useState(false)
   const [launched, setLaunched] = useState(false)
+  /* AI-FIX: track every pending timer so they are cleared on unmount —
+     prevents setState-after-unmount when the child is navigated away mid-delay. */
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+  const after = (fn: () => void, ms: number) => { timers.current.push(setTimeout(fn, ms)) }
+  useEffect(() => () => { timers.current.forEach(clearTimeout) }, [])
 
   const q = questions[qIdx]
   const total = questions.length
-  const progressPct = Math.min(100, (altitude / total) * 100)
+  const progressPct = total > 0 ? Math.min(100, (altitude / total) * 100) : 0
 
   const pick = (opt: string) => {
     if (lock || !q) return
@@ -31,19 +36,22 @@ export default function MathRocket({ questions, unit, onCorrect, onWrong, onComp
       playCorrect()
       onCorrect()
       setAltitude(a => a + 1)
-      setTimeout(() => {
-        if (qIdx + 1 >= total) { setLaunched(true); setTimeout(onComplete, 1500) }
+      after(() => {
+        if (qIdx + 1 >= total) { setLaunched(true); after(onComplete, 1500) }
         else { setQIdx(i => i + 1); setLock(false) }
       }, 700)
     } else {
       playWrong()
       onWrong()
       setShake(true)
-      setTimeout(() => { setShake(false); setLock(false) }, 500)
+      after(() => { setShake(false); setLock(false) }, 500)
     }
   }
 
-  useEffect(() => { if (launched) onComplete() }, [launched])
+  /* AI-FIX: removed `useEffect(() => { if (launched) onComplete() }, [launched])`.
+     It fired onComplete the instant `launched` flipped true, while pick() ALSO
+     scheduled onComplete after 1500ms — completing the lesson twice (double XP +
+     double "perfect score"). The 1500ms launch animation now owns completion. */
 
   if (showHelp) {
     return (

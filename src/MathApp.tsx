@@ -1,9 +1,9 @@
 import { ArrowLeft, RefreshCw, Trophy, BookOpen } from 'lucide-react'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, type ComponentType } from 'react'
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import { useProgress } from './hooks/useProgress'
 import { BADGES } from './data/badges'
-import { xpProgress } from './utils/types'
+import { xpProgress, type GameStats } from './utils/types'
 import LevelBar from './components/LevelBar'
 import BadgeGrid from './components/BadgeGrid'
 import Confetti from './components/Confetti'
@@ -19,7 +19,18 @@ import MathClock from './games/math/MathClock'
 import MathBalance from './games/math/MathBalance'
 import MathShape from './games/math/MathShape'
 
-const components: Record<string, any> = {
+/* AI-FIX: replaced `Record<string, any>` with the real shared game-component
+   signature so prop mismatches are caught at compile time. */
+import type { MathQuestion, MathUnit } from './data/math'
+type MathGameComponent = ComponentType<{
+  questions: MathQuestion[]
+  unit: MathUnit
+  onCorrect: () => void
+  onWrong: () => void
+  onComplete: () => void
+}>
+
+const components: Record<string, MathGameComponent> = {
   mshooter: MathShooter,
   mrocket: MathRocket,
   mrace: MathRace,
@@ -38,12 +49,17 @@ export default function MathApp() {
   const { stats, addCorrectAnswer, addWrongAnswer, addPerfectScore, awardBadge } = useProgress()
   const [showConfetti, setShowConfetti] = useState(false)
 
+  /* AI-FIX: clear the confetti timer on unmount / re-run to avoid a stray
+     setState after the component leaves the tree. */
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined
     BADGES.forEach(b => {
       if (!stats.badges.includes(b.id) && b.conditionMet(stats)) {
-        awardBadge(b.id); setShowConfetti(true); setTimeout(() => setShowConfetti(false), 4000)
+        awardBadge(b.id); setShowConfetti(true)
+        timer = setTimeout(() => setShowConfetti(false), 4000)
       }
     })
+    return () => { if (timer) clearTimeout(timer) }
   }, [stats])
 
   return (
@@ -60,7 +76,7 @@ export default function MathApp() {
   )
 }
 
-function MathDashboard({ stats }: { stats: any }) {
+function MathDashboard({ stats }: { stats: GameStats }) { /* AI-FIX: was `any` */
   const navigate = useNavigate()
   const { currentLevel } = xpProgress(stats.xp)
   const [tab, setTab] = useState<'games'|'badges'>('games')

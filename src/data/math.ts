@@ -70,7 +70,8 @@ export interface MathQuestion {
 const rand = (n: number) => Math.floor(Math.random() * n)
 const pick = <T,>(arr: T[]) => arr[rand(arr.length)]
 const shuffle = <T,>(a: T[]) => { const b = [...a]; for (let i = b.length-1; i>0; i--){ const j = rand(i+1); [b[i],b[j]]=[b[j],b[i]] } return b }
-const uniq = <T,>(a: T[]) => Array.from(new Set(a))
+/* AI-FIX: removed unused `uniq` helper — its only caller (clock distractors) was
+   rewritten to use a Set directly, leaving it orphaned (noUnusedLocals). */
 
 function withDistractors(answer: number, range: [number,number], count = 3): string[] {
   const opts = new Set<number>([answer])
@@ -81,7 +82,16 @@ function withDistractors(answer: number, range: [number,number], count = 3): str
     const cand = answer + sign * delta
     if (cand >= range[0] && cand <= range[1] && cand !== answer) opts.add(cand)
   }
-  while (opts.size < count + 1) opts.add(answer + opts.size)
+  /* AI-FIX: previous fallback `opts.add(answer + opts.size)` could deadlock —
+     when the candidate already existed in the set, opts.size never grew and the
+     same colliding value was retried forever (browser freeze). Walk an
+     ever-increasing offset so every iteration is guaranteed to make progress. */
+  let extra = 1
+  while (opts.size < count + 1) {
+    if (!opts.has(answer + extra)) opts.add(answer + extra)
+    extra++
+    if (extra > 1000) break // absolute safety net; cannot realistically hit
+  }
   return shuffle(Array.from(opts).map(String))
 }
 
@@ -159,11 +169,17 @@ export function genUnit3(n = 6): MathQuestion[] {
   const fracs: [number,number][] = [[1,2],[1,4],[2,4],[3,4],[1,3],[2,3]]
   for (let i = 0; i < n; i++) {
     const [num, den] = pick(fracs)
+    /* AI-FIX: reject distractors whose VALUE equals the answer (e.g. 2/4 vs 1/2).
+       Previously only the literal string was compared, so a numerically
+       equivalent fraction could appear as a "wrong" option, making two options
+       correct for the shaded pizza. safety guard prevents any stall. */
+    const ansVal = num / den
     const distract: string[] = []
-    while (distract.length < 3) {
+    let fSafety = 0
+    while (distract.length < 3 && fSafety++ < 100) {
       const [n2,d2] = pick(fracs)
       const s = `${n2}/${d2}`
-      if (s !== `${num}/${den}` && !distract.includes(s)) distract.push(s)
+      if (n2 / d2 !== ansVal && !distract.includes(s)) distract.push(s)
     }
     out.push({
       prompt: 'Pecahan manakah berlorek?',
@@ -224,10 +240,19 @@ export function genUnit5(n = 6): MathQuestion[] {
       const half = Math.random() < 0.5
       const m = half ? 30 : 0
       const ans = `${h}:${m.toString().padStart(2,'0')}`
-      const others = uniq([1+rand(12), 1+rand(12), 1+rand(12)]).filter(x => x !== h).slice(0,3)
-        .map(x => `${x}:${(Math.random()<0.5?0:30).toString().padStart(2,'0')}`)
-      while (others.length < 3) others.push(`${1+rand(12)}:00`)
-      out.push({ prompt: 'Apakah waktu ditunjukkan?', display: ans, options: shuffle([ans, ...others.slice(0,3)]), answer: ans })
+      /* AI-FIX: build distractor times in a Set so options are guaranteed unique.
+         Old code mixed random minutes into the fallback and could emit a time
+         string identical to the answer or to another option (duplicate/ambiguous
+         choices + React key collisions). */
+      const others = new Set<string>()
+      let cSafety = 0
+      while (others.size < 3 && cSafety++ < 100) {
+        const oh = 1 + rand(12)
+        const om = Math.random() < 0.5 ? 0 : 30
+        const s = `${oh}:${om.toString().padStart(2,'0')}`
+        if (s !== ans) others.add(s)
+      }
+      out.push({ prompt: 'Apakah waktu ditunjukkan?', display: ans, options: shuffle([ans, ...others]), answer: ans })
     } else if (r === 1) {
       const idx = rand(7)
       const ans = days[idx]
@@ -313,7 +338,14 @@ export function genUnit8(n = 6): MathQuestion[] {
   const out: MathQuestion[] = []
   const animals = ['🐶','🐱','🐰','🐸','🐯','🐵']
   for (let i = 0; i < n; i++) {
-    const counts = animals.slice(0,3).map(() => 1 + rand(8))
+    /* AI-FIX: guarantee 3 DISTINCT counts. With random repeats two bars could
+       tie for most/least, but indexOf(max/min) returns only the first, so the
+       other equally-valid animal was scored wrong. */
+    const distinct = new Set<number>()
+    let dSafety = 0
+    while (distinct.size < 3 && dSafety++ < 100) distinct.add(1 + rand(8))
+    while (distinct.size < 3) distinct.add(distinct.size + 1) // pad if pool exhausted
+    const counts = shuffle(Array.from(distinct))
     const r = rand(3)
     const display = animals.slice(0,3).map((a, j) => `${a}${' '+a.repeat(counts[j]-1)}`).join('|')
     if (r === 0) {
