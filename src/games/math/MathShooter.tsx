@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { playCorrect, playWrong } from '../../hooks/useSound'
 import { themeOf } from './themeUtil'
+import QDisplay from './QDisplay'
 import type { MathQuestion, MathUnit } from '../../data/math'
 
 interface Props {
@@ -158,10 +159,12 @@ export default function MathShooter({ questions, unit, onCorrect, onWrong, onCom
     <div className="w-full max-w-md mx-auto space-y-3">
       <div className="rounded-2xl p-4 text-center font-extrabold text-lg" style={{ background: t.primary, color: '#fff' }}>
         {q.prompt}
-        {q.display && q.display.length < 30 && (
-          <div className="mt-1 text-2xl">{q.display}</div>
-        )}
       </div>
+      {q.display && (
+        <div className="rounded-2xl p-3 flex items-center justify-center bg-white/90 min-h-[120px]">
+          <QDisplay q={q} />
+        </div>
+      )}
       <canvas
         ref={cvsRef}
         onClick={handleClick}

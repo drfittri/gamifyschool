@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { playCorrect, playWrong } from '../../hooks/useSound'
 import { themeOf } from './themeUtil'
+import QDisplay from './QDisplay'
 import type { MathQuestion, MathUnit } from '../../data/math'
 
 interface Props {
@@ -95,8 +96,12 @@ export default function MathRocket({ questions, unit, onCorrect, onWrong, onComp
 
       <div className="rounded-2xl p-4 text-center font-extrabold text-xl" style={{ background: t.primary, color: '#fff' }}>
         {q.prompt}
-        {q.display && q.display.length < 30 && <div className="text-2xl mt-1">{q.display}</div>}
       </div>
+      {q.display && (
+        <div className="rounded-2xl p-3 flex items-center justify-center bg-white/90 min-h-[120px]">
+          <QDisplay q={q} />
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-3">
         {q.options.map(opt => (
