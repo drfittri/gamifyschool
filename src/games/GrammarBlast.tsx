@@ -20,8 +20,27 @@ function shuffle<T>(arr: T[]): T[] {
 }
 function startsWithVowel(w: string) { return /^[aeiou]/i.test(w) }
 
+// Uncountable / non-singular words that don't take "a"/"an" or a simple plural.
+const UNCOUNTABLE = new Set(['water', 'milk', 'juice', 'rice', 'bread', 'love', 'fun', 'music', 'hair', 'homework'])
+// Non-noun lesson words that can't fill "a ___" or "The ___ is big" sensibly.
+const NOT_A_NOUN = new Set([
+  'hello', 'goodbye', 'hi', 'bye', 'good', 'morning', 'afternoon', 'wear', 'eat', 'drink', 'play', 'share',
+  'read', 'sing', 'dance', 'swim', 'run', 'jump', 'draw', 'skip', 'crawl', 'touch', 'count',
+  'hot', 'cold', 'happy', 'fast', 'big', 'pretty', 'soft', 'sweet',
+  'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'weekend',
+])
+function pluralize(w: string): string {
+  const irregular: Record<string, string> = { fish: 'fish', sheep: 'sheep', foot: 'feet', tooth: 'teeth', child: 'children', man: 'men', woman: 'women', mouse: 'mice' }
+  if (irregular[w]) return irregular[w]
+  if (/[sxz]$/.test(w) || /(ch|sh)$/.test(w)) return w + 'es'
+  if (/[bcdfghjklmnpqrstvwxyz]y$/.test(w)) return w.slice(0, -1) + 'ies'
+  return w + 's'
+}
+
 function buildQuestions(words: string[]): GrammarQ[] {
-  const pool = words.filter(w => w.length >= 3 && /^[a-z]+$/i.test(w))
+  // countable nouns only, so "a/an" and plurals are always well-formed
+  let pool = words.filter(w => w.length >= 3 && /^[a-z]+$/i.test(w) && !UNCOUNTABLE.has(w.toLowerCase()) && !NOT_A_NOUN.has(w.toLowerCase()))
+  if (pool.length < 2) pool = words.filter(w => w.length >= 3 && /^[a-z]+$/i.test(w) && !UNCOUNTABLE.has(w.toLowerCase()))
   const qs: GrammarQ[] = []
   for (let i = 0; i < 3 && pool.length > 0; i++) {
     const w = pool[Math.floor(Math.random() * pool.length)]
@@ -31,7 +50,7 @@ function buildQuestions(words: string[]): GrammarQ[] {
   for (let i = 0; i < 3 && pool.length > 0; i++) {
     const w = pool[Math.floor(Math.random() * pool.length)]
     const singular = Math.random() > 0.5
-    const subj = singular ? `The ${w}` : `The ${w}s`
+    const subj = singular ? `The ${w}` : `The ${pluralize(w)}`
     const verb = singular ? 'is' : 'are'
     qs.push({ sentence: `${subj} ___ big.`, options: [verb, singular ? 'are' : 'is'], answer: verb })
   }

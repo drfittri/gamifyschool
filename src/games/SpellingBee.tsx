@@ -33,7 +33,20 @@ export default function SpellingBeeGame({ words, onCorrect, onWrong, onComplete 
   useEffect(() => {
     const l = word.split('')
     setLetters(l)
-    setShuffled([...l].sort(() => Math.random() - 0.5))
+    // Add 2 distractor letters (not already in the word) so tiles aren't just the answer
+    const used = new Set(l)
+    const extras: string[] = []
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
+    let guard = 0
+    while (extras.length < 2 && guard < 100) {
+      const cand = alphabet[Math.floor(Math.random() * 26)]
+      if (!used.has(cand)) { extras.push(cand); used.add(cand) }
+      guard++
+    }
+    // Fisher-Yates shuffle of word letters + distractors
+    const a = [...l, ...extras]
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]] }
+    setShuffled(a)
     setAnswer([]); setWrong(false); setHint(false)
   }, [index, word])
 

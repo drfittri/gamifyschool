@@ -233,16 +233,16 @@ export default function PhonicsRocket({ words, onCorrect, onWrong, onComplete }:
   return (
     <div className="w-full max-w-xl mx-auto flex flex-col items-center gap-3">
       <div className="clay-card px-4 py-2 flex items-center gap-2 text-lg font-extrabold flex-wrap justify-center" style={{ fontFamily: 'var(--font-display)' }}>
-        <span className="text-clay-text-muted text-sm">Spell:</span>
+        <span className="text-clay-text-muted text-base">Spell:</span>
         {word.split('').map((c, i) => (
-          <span key={i} className={`text-2xl px-1 ${i < sess.letterIdx ? 'text-emerald-500' : i === sess.letterIdx ? 'text-clay-cta animate-pulse' : 'text-clay-text-muted/40'}`}>
-            {i < sess.letterIdx ? c.toUpperCase() : i === sess.letterIdx ? '?' : '_'}
+          <span key={i} className={`text-2xl px-1 ${i < sess.letterIdx ? 'text-emerald-500' : i === sess.letterIdx ? 'text-clay-cta animate-pulse underline' : 'text-clay-text-muted/60'}`}>
+            {c.toUpperCase()}
           </span>
         ))}
-        <span className="text-clay-text-muted text-sm ml-2">{Math.min(sess.wordIdx + 1, sess.words.length)}/{sess.words.length}</span>
+        <span className="text-clay-text-muted text-base ml-2">{Math.min(sess.wordIdx + 1, sess.words.length)}/{sess.words.length}</span>
       </div>
       <canvas ref={canvasRef} className="w-full rounded-2xl border-4 border-white shadow-clay-card" style={{ aspectRatio: '3 / 4', maxHeight: '70vh', touchAction: 'none' }} />
-      <p className="text-clay-text-muted text-sm font-semibold">Catch fuel labelled <span className="text-clay-cta font-extrabold">{word[sess.letterIdx]?.toUpperCase() || '✓'}</span></p>
+      <p className="text-clay-text-muted text-base font-semibold">🟢 Catch the <span className="text-clay-cta font-extrabold">next letter</span> of the word!</p>
     </div>
   )
 }

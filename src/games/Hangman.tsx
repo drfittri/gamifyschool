@@ -64,7 +64,7 @@ export default function HangmanGame({ words, onCorrect, onWrong, onComplete }: P
         <span>Dragon power:</span>
         <div className="flex gap-1">
           {[...Array(maxWrongs)].map((_, i) => (
-            <span key={i} className={`text-base ${i < wrongs ? '🔥' : '💧'}`}>{i < wrongs ? '🔥' : '💧'}</span>
+            <span key={i} className="text-base">{i < wrongs ? '🔥' : '💧'}</span>
           ))}
         </div>
       </div>
@@ -82,12 +82,12 @@ export default function HangmanGame({ words, onCorrect, onWrong, onComplete }: P
       </div>
       {isLost && <div className="text-clay-error font-extrabold text-lg animate-wiggle">🔥 Dragon wins! The word was: <span className="text-clay-text">{word}</span></div>}
       {isWon && <div className="text-clay-success font-extrabold text-lg animate-bounce-in">🛡️ Dragon defeated! Well done!</div>}
-      <div className="flex flex-wrap gap-1 justify-center max-w-[340px]">
+      <div className="flex flex-wrap gap-1 justify-center max-w-[360px]">
         {keys.map(l => {
           const used = guessed.has(l); const correct = word.includes(l) && guessed.has(l); const wrong = guessed.has(l) && !word.includes(l)
           return (
             <button key={l} onClick={() => guess(l)} disabled={ended || used}
-              className={`min-w-[36px] h-[36px] rounded-lg text-sm font-extrabold transition-all border-2 ${
+              className={`min-w-[44px] h-[44px] rounded-lg text-base font-extrabold transition-all border-2 ${
                 correct ? 'bg-clay-success/20 text-clay-success border-clay-success/30' : wrong ? 'bg-clay-error/15 text-clay-error border-clay-error/20' : used ? 'bg-gray-200 border-gray-200' : 'clay-card-interactive border-white/80'
               }`} style={{ fontFamily: 'var(--font-display)' }}>
               {l.toUpperCase()}

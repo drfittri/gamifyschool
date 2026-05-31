@@ -51,10 +51,14 @@ export default function CategorySort({ onCorrect, onWrong, onComplete }: Props) 
   const recruitData = useMemo(() => {
     const cats = shuffle(buildCategories()).slice(0, 3)
     cats.forEach((c, i) => { CAT_TANK[c.name] = TANK_SPRITES[i % TANK_SPRITES.length] })
+    // a word that appears in more than one shown category would be ambiguous — drop it
+    const counts: Record<string, number> = {}
+    for (const c of cats) for (const w of c.words) counts[w] = (counts[w] || 0) + 1
     const pool: Recruit[] = []
     let id = 1
     for (const c of cats) {
-      for (const w of shuffle([...c.words]).slice(0, 3)) {
+      const unique = c.words.filter(w => counts[w] === 1)
+      for (const w of shuffle(unique).slice(0, 3)) {
         pool.push({ id: id++, word: w, category: c.name, tank: CAT_TANK[c.name] })
       }
     }

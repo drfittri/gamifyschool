@@ -115,7 +115,7 @@ export default function SentenceBuilder({ words: _words, unit, onCorrect, onWron
             <button
               key={`built-${i}-${w}`}
               onClick={() => removeTile(i)}
-              className="clay-card px-3 py-1.5 rounded-xl text-base font-extrabold text-clay-text border-3 border-white/80 animate-pop-in"
+              className="clay-card px-4 py-2.5 min-h-[44px] rounded-xl text-base font-extrabold text-clay-text border-3 border-white/80 animate-pop-in"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               {w}
@@ -129,7 +129,7 @@ export default function SentenceBuilder({ words: _words, unit, onCorrect, onWron
           <button
             key={`tile-${i}-${w}`}
             onClick={() => addTile(w)}
-            className="clay-card-interactive px-4 py-2 rounded-xl text-base font-extrabold text-clay-text border-3 border-white/80"
+            className="clay-card-interactive px-4 py-2.5 min-h-[44px] rounded-xl text-base font-extrabold text-clay-text border-3 border-white/80"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             {w}
@@ -138,10 +138,10 @@ export default function SentenceBuilder({ words: _words, unit, onCorrect, onWron
       </div>
 
       <div className="flex gap-3">
-        <button onClick={checkSentence} disabled={built.length === 0} className="clay-button px-6 py-2.5 text-lg font-extrabold disabled:opacity-40 disabled:cursor-not-allowed">
+        <button onClick={checkSentence} disabled={built.length === 0} className="clay-button px-6 py-2.5 min-h-[44px] text-lg font-extrabold disabled:opacity-40 disabled:cursor-not-allowed">
           Check
         </button>
-        <button onClick={resetAll} className="clay-card-interactive px-5 py-2.5 text-base font-extrabold text-clay-text border-3 border-white/80">
+        <button onClick={resetAll} className="clay-card-interactive px-5 py-2.5 min-h-[44px] text-base font-extrabold text-clay-text border-3 border-white/80">
           Reset
         </button>
       </div>

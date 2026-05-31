@@ -77,10 +77,10 @@ export default function WordScrambleGame({ words, onCorrect, onWrong, onComplete
           <Delete className="w-4 h-4" /> Backspace
         </button>
       )}
-      <div className="flex flex-wrap gap-1.5 justify-center max-w-[340px]">
+      <div className="flex flex-wrap gap-1.5 justify-center max-w-[380px]">
         {keyboard.map(l => (
           <button key={l} onClick={() => handleKey(l)} disabled={playerInput.length >= word.length}
-            className="clay-card-interactive min-w-[40px] h-[40px] rounded-xl flex items-center justify-center text-sm font-extrabold text-clay-text border-2 border-white/80 disabled:opacity-30">
+            className="clay-card-interactive min-w-[44px] h-[44px] rounded-xl flex items-center justify-center text-base font-extrabold text-clay-text border-2 border-white/80 disabled:opacity-30">
             {l.toUpperCase()}
           </button>
         ))}

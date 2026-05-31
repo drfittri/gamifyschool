@@ -23,12 +23,12 @@ const WORD_EMOJI: Record<string, string> = {
 export default function FillBlankGame({ words, onCorrect, onWrong, onComplete }: Props) {
   const pool = words.slice(0, 8)
   const questions = useMemo(() => {
-    if (pool.length < 3) return [{ sentence: 'I see ___ !', answer: pool[0], emoji: WORD_EMOJI[pool[0]] || '📝', options: shuffle(pool.slice(0, 4)) }]
+    if (pool.length < 3) return [{ sentence: 'The picture shows: ___', answer: pool[0], emoji: WORD_EMOJI[pool[0]] || '📝', options: shuffle([pool[0], ...pool.slice(1, 4)]) }]
     return pool.slice(0, 6).map(w => {
       const wrong = shuffle(pool.filter(x => x !== w)).slice(0, 3)
-      const templates = ['I see ___ .', 'Look! Here is ___ .', 'I can find ___ .', 'Show me ___ !', 'Where is ___ ?']
-      const t = templates[Math.floor(Math.random() * templates.length)]
-      return { sentence: t, answer: w, emoji: WORD_EMOJI[w] || '📝', options: shuffle([w, ...wrong]) }
+      // Neutral carrier that reads correctly for any word type (noun/verb/adjective)
+      // because the picture is the real cue: "The picture shows: ___ ."
+      return { sentence: 'The picture shows: ___', answer: w, emoji: WORD_EMOJI[w] || '📝', options: shuffle([w, ...wrong]) }
     })
   }, [words.join(',')])
 

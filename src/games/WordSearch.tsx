@@ -80,14 +80,14 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
       </div>
       <div className="flex gap-1.5 flex-wrap justify-center max-w-[380px]">
         {pool.map(w => (
-          <span key={w} className={`px-2.5 py-1 rounded-lg text-xs font-extrabold transition-all ${found.has(w) ? 'bg-clay-success/20 text-clay-success line-through' : 'bg-clay-surface text-clay-text'}`}
+          <span key={w} className={`px-2.5 py-1 rounded-lg text-base font-extrabold transition-all ${found.has(w) ? 'bg-clay-success/20 text-clay-success line-through' : 'bg-clay-surface text-clay-text'}`}
             style={{ fontFamily: 'var(--font-display)' }}>{w}</span>
         ))}
       </div>
       <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))` }}>
         {grid.map((row, r) => row.map((cell, c) => (
           <button key={`${r}-${c}`} onClick={() => handleCellClick(r, c)}
-            className={`min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] rounded-lg flex items-center justify-center text-sm font-extrabold transition-all border-2 ${
+            className={`min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] rounded-lg flex items-center justify-center text-base font-extrabold transition-all border-2 ${
               isFound(r, c) ? 'bg-clay-success/20 text-clay-success border-clay-success/30' : isSelected(r, c) ? 'clay-card border-clay-primary/30' : 'bg-white/80 text-clay-text border-white/60 hover:bg-clay-surface'
             }`}
             style={{ fontFamily: 'var(--font-display)' }}>

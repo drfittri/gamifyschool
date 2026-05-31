@@ -122,7 +122,7 @@ export function generateSpellingQuestions(unit: LessonTopic): string[] {
 }
 
 export function generateScrambleQuestions(unit: LessonTopic): string[] {
-  return unit.words.filter(w => w.length >= 3).slice(0, 8)
+  return unit.words.filter(w => w.length >= 3 && !/[\s-]/.test(w)).slice(0, 8)
 }
 
 export function generateFillBlankQuestions(unit: LessonTopic): { sentence: string; answer: string; options: string[] }[] {
@@ -135,11 +135,11 @@ export function generateFillBlankQuestions(unit: LessonTopic): { sentence: strin
 }
 
 export function generateWordSearch(unit: LessonTopic): string[] {
-  return unit.words.filter(w => w.length >= 3 && w.length <= 8).slice(0, 6)
+  return unit.words.filter(w => w.length >= 3 && w.length <= 8 && !/[\s-]/.test(w)).slice(0, 6)
 }
 
 export function generateHangmanWords(unit: LessonTopic): string[] {
-  return unit.words.filter(w => w.length >= 3).slice(0, 10)
+  return unit.words.filter(w => w.length >= 3 && !/[\s-]/.test(w)).slice(0, 10)
 }
 
 export function generateSpeedTypingWords(unit: LessonTopic): string[] {
@@ -173,6 +173,14 @@ function wordEmoji(word: string): string {
     shirt: '👕', pants: '👖', shorts: '🩳', dress: '👗', shoes: '👟', socks: '🧦', hat: '🎩', cap: '🧢', skirt: '👗', jacket: '🧥',
     ball: '⚽', doll: '🪆', car: '🚗', kite: '🪁', bike: '🚲', teddy: '🧸', train: '🚂', blocks: '🧱', puzzle: '🧩', game: '🎮', play: '🤸',
     morning: '🌅', afternoon: '☀️', name: '📛', love: '❤️', home: '🏠', school: '🏫',
+    good: '👍', face: '😊', arms: '💪', arm: '💪', legs: '🦵', leg: '🦵', hand: '✋', knee: '🦵', foot: '🦶',
+    uncle: '👨', aunt: '👩', grey: '🩶', rainbow: '🌈', count: '🔢', 'how many': '🔢',
+    pupil: '🧑‍🎓', classroom: '🏫', wear: '👔', 'put on': '🧥', fun: '🎉', share: '🤝',
+    monday: '📅', tuesday: '📅', wednesday: '📅', thursday: '📅', friday: '📅', saturday: '📅', sunday: '📅', weekend: '🎉',
+    read: '📖', sing: '🎤', dance: '💃', swim: '🏊', run: '🏃', jump: '🦘', draw: '🎨', skip: '🤾', crawl: '🧎', touch: '👆',
+    'living room': '🛋️', kitchen: '🍳', bedroom: '🛏️', bathroom: '🛁', hall: '🚪', stairs: '🪜', cellar: '🏚️', 'dining room': '🍽️', door: '🚪', window: '🪟', garden: '🌳',
+    't-shirt': '👕', jeans: '👖', trousers: '👖', sweater: '🧥',
+    beach: '🏖️', shell: '🐚', sandcastle: '🏰', sea: '🌊', photo: '📷', music: '🎵', 'ice cream': '🍦', guitar: '🎸', sun: '☀️', hot: '🔥', cold: '🥶',
   }
   return map[word.toLowerCase()] || '📝'
 }

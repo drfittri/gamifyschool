@@ -87,7 +87,7 @@ export default function MemoryCardGame({ words, onCorrect, onWrong, onComplete }
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {card.flipped || card.matched ? (
-            card.type === 'word' ? <span className="text-sm">{card.content}</span> : <span className="text-3xl">{card.content}</span>
+            card.type === 'word' ? <span className="text-base">{card.content}</span> : <span className="text-3xl">{card.content}</span>
           ) : (
             <span className="text-2xl">🟫</span>
           )}

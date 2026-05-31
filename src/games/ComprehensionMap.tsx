@@ -29,7 +29,15 @@ interface CompQ {
 
 const PEOPLE = ['Ali', 'Siti', 'Minah', 'Ahmad', 'Rajoo', 'Mei Ling', 'Adam', 'Hana']
 const Colours = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'black', 'white']
+// Non-noun lesson words that read wrong in "has a ___" / "has 4 ___s" passages.
+const NOT_A_NOUN = new Set([
+  'hello', 'goodbye', 'hi', 'bye', 'good', 'morning', 'afternoon', 'wear', 'eat', 'drink', 'play', 'share',
+  'read', 'sing', 'dance', 'swim', 'run', 'jump', 'draw', 'skip', 'crawl', 'touch', 'count',
+  'hot', 'cold', 'happy', 'fast', 'pretty', 'soft', 'sweet', 'love',
+  'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'weekend',
+])
 
+function article(w: string): string { return /^[aeiou]/i.test(w) ? 'an' : 'a' }
 function pluralize(w: string): string {
   const irregular: Record<string, string> = { fish: 'fish', sheep: 'sheep', foot: 'feet', tooth: 'teeth', child: 'children' }
   if (irregular[w]) return irregular[w]
@@ -41,7 +49,9 @@ function pluralize(w: string): string {
 export default function ComprehensionMap({ words: _words, unit, onCorrect, onWrong, onComplete }: Props) {
   const questions = useMemo(() => {
     const qs: CompQ[] = []
-    const unitWords = unit.words.filter(w => w.length >= 3 && !w.includes(' '))
+    // prefer concrete nouns; only fall back to all words if there aren't enough to fill options
+    let unitWords = unit.words.filter(w => w.length >= 3 && !w.includes(' ') && !NOT_A_NOUN.has(w.toLowerCase()))
+    if (unitWords.length < 2) unitWords = unit.words.filter(w => w.length >= 3 && !w.includes(' '))
 
     for (let i = 0; i < 5 && unitWords.length > 0; i++) {
       const person = PEOPLE[i % PEOPLE.length]
@@ -51,17 +61,28 @@ export default function ComprehensionMap({ words: _words, unit, onCorrect, onWro
       const number = Math.floor(Math.random() * 5) + 2
 
       const passages = [
-        { passage: `${person} has a ${w1}. It is ${color}. ${person} likes it very much.`, question: `What colour is the ${w1}?`, answer: color },
+        { passage: `${person} has ${article(w1)} ${w1}. It is ${color}. ${person} likes it very much.`, question: `What colour is the ${w1}?`, answer: color },
         { passage: `${person} has ${number} ${pluralize(w1)}. One is ${color}. The others are white.`, question: `How many ${pluralize(w1)} does ${person} have?`, answer: String(number) },
         { passage: `${person} likes to eat ${w1}. ${person} does not like ${w2}.`, question: `What does ${person} like to eat?`, answer: w1 },
-        { passage: `${person} can see a ${w1} and a ${w2}. The ${w1} is ${color}.`, question: `What can ${person} see?`, answer: w1 },
-        { passage: `${person} plays with a ${w1} every day. The ${w1} is ${color}.`, question: `What does ${person} play with?`, answer: w1 },
+        { passage: `${person} can see ${article(w1)} ${w1} and ${article(w2)} ${w2}. The ${w1} is ${color}.`, question: `What can ${person} see?`, answer: w1 },
+        { passage: `${person} plays with ${article(w1)} ${w1} every day. The ${w1} is ${color}.`, question: `What does ${person} play with?`, answer: w1 },
       ]
 
       const picked = passages[i % passages.length]
-      const distractorWords = shuffle(unitWords.filter(w => w !== picked.answer && String(w) !== picked.answer)).slice(0, 3)
-      if (distractorWords.length >= 3) {
-        qs.push({ ...picked, options: shuffle([picked.answer, ...distractorWords]) })
+      const isNumeric = /^\d+$/.test(picked.answer)
+      if (isNumeric) {
+        // numeric answer needs numeric distractors, else the only digit is a giveaway
+        const opts = new Set<string>([picked.answer])
+        while (opts.size < 4) {
+          const n = Math.floor(Math.random() * 8) + 2
+          opts.add(String(n))
+        }
+        qs.push({ ...picked, options: shuffle([...opts]) })
+      } else {
+        const distractorWords = shuffle(unitWords.filter(w => w !== picked.answer && String(w) !== picked.answer)).slice(0, 3)
+        if (distractorWords.length >= 3) {
+          qs.push({ ...picked, options: shuffle([picked.answer, ...distractorWords]) })
+        }
       }
     }
 
