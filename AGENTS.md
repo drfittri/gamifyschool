@@ -48,14 +48,15 @@ src/
     ├── FillBlank.tsx        # Complete sentence blanks with word options
     ├── WordSearch.tsx       # Find words in random-filled letter grid
     ├── Hangman.tsx          # Classic hangman with emoji clues
-    ├── SpeedTyping.tsx      # Race against 60s timer, typing words
+    ├── SpeedTyping.tsx      # 4-lane top-down typing race (canvas)
     ├── Listening.tsx        # Browser TTS reads a word, pick from options
-    ├── RacerWords.tsx       # 3-lane car race, answer to accelerate
-    ├── TargetBlast.tsx      # Paintball target shooting with word matching
-    ├── TroopMarch.tsx       # Recruit cartoon soldiers by answering
-    ├── RocketLaunch.tsx     # Fuel rocket with correct answers
-    ├── TreasureMap.tsx      # Navigate 5×5 pirate map grid
-    └── JetFighter.tsx       # Scroll-collect game with word clouds
+    ├── RacerWords.tsx       # Real-time 4-car canvas race; hear word, tap to boost
+    ├── TargetBlast.tsx      # Canvas UFO shooter; hear/see word, blast the right UFO
+    ├── TroopMarch.tsx       # Canvas battlefield; recruit labeled tanks to your base
+    ├── RocketLaunch.tsx     # Canvas launchpad; fuel rocket, cinematic moon launch
+    ├── TreasureMap.tsx      # 5×5 pirate map; answer then choose your move (BFS-solvable)
+    ├── JetFighter.tsx       # Canvas scroll shooter; spell words by shooting letters
+    └── shared/wordBank.ts   # Shared WORD_EMOJI map + makeRounds() question builder
 ```
 
 ## Architecture

@@ -10,7 +10,7 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
   const [found, setFound] = useState<Set<string>>(new Set())
   const [selectedCells, setSelectedCells] = useState<[number, number][]>([])
 
-  const { grid, positions } = useMemo(() => {
+  const { grid, positions, placedWords } = useMemo(() => {
     const g: string[][] = Array.from({ length: gridSize }, () => Array(gridSize).fill(''))
     const pos: Record<string, [number, number][]> = {}
     const letters = 'abcdefghijklmnopqrstuvwxyz'
@@ -23,7 +23,7 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
         if (dir === 0) { dr = 0; dc = 1; sr = Math.floor(Math.random() * gridSize); sc = Math.floor(Math.random() * (gridSize - word.length)) }
         else if (dir === 1) { dr = 1; dc = 0; sr = Math.floor(Math.random() * (gridSize - word.length)); sc = Math.floor(Math.random() * gridSize) }
         else if (dir === 2) { dr = 1; dc = 1; sr = Math.floor(Math.random() * (gridSize - word.length)); sc = Math.floor(Math.random() * (gridSize - word.length)) }
-        else { dr = 1; dc = -1; sr = Math.floor(Math.random() * (gridSize - word.length)); sc = Math.floor(Math.random() * gridSize) + word.length - 1 }
+        else { dr = 1; dc = -1; sr = Math.floor(Math.random() * (gridSize - word.length)); sc = word.length - 1 + Math.floor(Math.random() * (gridSize - word.length + 1)) }
 
         let ok = true
         const cells: [number, number][] = []
@@ -36,7 +36,8 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
       }
     }
     for (let r = 0; r < gridSize; r++) for (let c = 0; c < gridSize; c++) if (!g[r][c]) g[r][c] = letters[Math.floor(Math.random() * 26)]
-    return { grid: g, positions: pos }
+    // only words actually placed in the grid are findable
+    return { grid: g, positions: pos, placedWords: pool.filter(w => pos[w]) }
   }, [words.join(',')])
 
   const handleCellClick = (r: number, c: number) => {
@@ -55,12 +56,12 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
     const selectedWord = selectedCells.map(([r, c]) => grid[r][c]).join('')
     const reversedWord = [...selectedCells].reverse().map(([r, c]) => grid[r][c]).join('')
 
-    for (const word of pool) {
+    for (const word of placedWords) {
       if (found.has(word)) continue
       if (selectedWord === word || reversedWord === word) {
         const f = new Set(found); f.add(word); setFound(f); setSelectedCells([])
         playCorrect(); onCorrect()
-        if (f.size >= pool.length) setTimeout(onComplete, 800)
+        if (f.size >= placedWords.length) setTimeout(onComplete, 800)
         return
       }
     }
@@ -79,7 +80,7 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
         <p className="text-sm text-clay-text-muted font-semibold">Tap letters in order to locate the target words!</p>
       </div>
       <div className="flex gap-1.5 flex-wrap justify-center max-w-[380px]">
-        {pool.map(w => (
+        {placedWords.map(w => (
           <span key={w} className={`px-2.5 py-1 rounded-lg text-base font-extrabold transition-all ${found.has(w) ? 'bg-clay-success/20 text-clay-success line-through' : 'bg-clay-surface text-clay-text'}`}
             style={{ fontFamily: 'var(--font-display)' }}>{w}</span>
         ))}
@@ -95,7 +96,7 @@ export default function WordSearchGame({ words, onCorrect, onComplete }: Props) 
           </button>
         )))}
       </div>
-      <div className="text-clay-text-muted text-sm font-semibold">🎯 Targets located: {found.size}/{pool.length}</div>
+      <div className="text-clay-text-muted text-sm font-semibold">🎯 Targets located: {found.size}/{placedWords.length}</div>
     </div>
   )
 }

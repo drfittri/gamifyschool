@@ -5,9 +5,13 @@ import { Lightbulb, Check, Delete } from 'lucide-react'
 interface Props { words: string[]; onCorrect: () => void; onWrong: () => void; onComplete: () => void }
 
 function scramble(w: string): string {
-  const arr = w.split('')
-  for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]] }
-  return arr.join('') === w ? `${arr[0]}${arr.slice(1).reverse().join('')}` : arr.join('')
+  for (let tries = 0; tries < 10; tries++) {
+    const arr = w.split('')
+    for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]] }
+    const out = arr.join('')
+    if (out !== w) return out
+  }
+  return w.split('').reverse().join('') // all-same-letter words can't be scrambled
 }
 
 const WORD_EMOJI: Record<string, string> = {

@@ -27,6 +27,11 @@ import CategorySort from './games/CategorySort'
 import PhonicsRocket from './games/PhonicsRocket'
 import ComprehensionMap from './games/ComprehensionMap'
 import JetFighterGame from './games/JetFighter'
+import TargetBlast from './games/TargetBlast'
+import TroopMarch from './games/TroopMarch'
+import RocketLaunch from './games/RocketLaunch'
+import RacerWords from './games/RacerWords'
+import TreasureMap from './games/TreasureMap'
 import { playGameStart } from './hooks/useSound'
 import SubjectChooser from './components/SubjectChooser'
 import MathApp from './MathApp'
@@ -38,6 +43,8 @@ const gameComponents: Record<string, any> = {
   listening: ListeningGame,
   sentencebuilder: SentenceBuilder, grammarblast: GrammarBlast, categorysort: CategorySort,
   phonicsrocket: PhonicsRocket, comprehensionmap: ComprehensionMap, jetfighter: JetFighterGame,
+  targetblast: TargetBlast, troopmarch: TroopMarch, rocketlaunch: RocketLaunch,
+  racerwords: RacerWords, treasuremap: TreasureMap,
 }
 
 function App() {
