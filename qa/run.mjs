@@ -28,6 +28,7 @@ const VIEWPORTS = [
   { name: 'tablet', width: 768, height: 1024 },
 ]
 
+const ONLY = process.argv[2] ? process.argv[2].split(',') : null
 const results = []
 const consoleErrors = []
 
@@ -42,65 +43,52 @@ async function pollQa(page, timeoutMs = 30000) {
 }
 
 async function answerOnce(page, game, vp) {
-  const qa = await pollQa(page, 25000)
-  if (!qa) throw new Error(`${game.id}: no __qa state`)
-  if (qa.phase === 'done') return { done: true }
-  // cinematic transitions (launch countdown, island sailing) — just wait
-  if (qa.phase === 'cinematic' || qa.phase === 'briefing' || (!qa.word && qa.phase !== 'move')) {
-    await page.waitForTimeout(400)
-    return { done: false }
-  }
+  // Always act on FRESH state: re-poll before every attempt so a transition
+  // (answered window, move phase, cinematic) never leaves us clicking stale
+  // targets like a wedged robot.
+  for (let attempt = 0; attempt < 24; attempt++) {
+    const qa = await page.evaluate(() => window.__qa ?? null)
+    if (!qa) { await page.waitForTimeout(250); continue }
+    if (qa.phase === 'done') return { done: true }
+    if (qa.phase === 'cinematic' || qa.phase === 'briefing') { await page.waitForTimeout(300); continue }
 
-  if (qa.phase === 'move') {
-    const dir = qa.bestMove ?? 'right'
-    const btn = page.locator(`[data-qa="${dir}"]`)
-    if (await btn.count()) { await btn.click(); return { done: false } }
-    // transition moment — wait for the next expose
-    await page.waitForTimeout(400)
-    return { done: false }
-  }
+    if (qa.phase === 'move') {
+      const dir = qa.bestMove ?? 'right'
+      const btn = page.locator(`[data-qa="${dir}"]`)
+      if (await btn.count()) { await btn.click(); return { done: false } }
+      await page.waitForTimeout(250)
+      continue
+    }
 
-  if (game.canvas && qa.point) {
-    const canvas = page.locator('canvas')
-    const box = await canvas.boundingBox()
-    if (!box) throw new Error(`${game.id}: no canvas`)
-    const x = box.x + qa.point.x
-    const y = box.y + qa.point.y
-    await page.mouse.click(x, y)
-    return { done: false }
-  }
-  if (game.canvas) {
-    // canvas target not painted yet — wait for the next frame to publish a point
-    await page.waitForTimeout(300)
-    return { done: false }
-  }
+    if (game.canvas) {
+      if (!qa.point) { await page.waitForTimeout(250); continue }
+      const box = await page.locator('canvas').boundingBox()
+      if (!box) { await page.waitForTimeout(250); continue }
+      await page.mouse.click(box.x + qa.point.x, box.y + qa.point.y)
+      return { done: false }
+    }
 
-  // DOM option buttons: click the one matching the target word
-  for (let attempt = 0; attempt < 6; attempt++) {
-    const clicked = await page.evaluate((word) => {
-      const buttons = [...document.querySelectorAll('button')]
-      const target = buttons.find(b => {
-        const t = (b.textContent || '').trim()
-        return t === word || t.endsWith(word)
-      })
-      if (target) { target.click(); return true }
-      return false
+    const r = await page.evaluate((word) => {
+      const btn = [...document.querySelectorAll('button')].find(
+        b => !b.disabled && (b.textContent || '').trim() === word,
+      )
+      if (btn) { btn.click(); return 'clicked' }
+      return 'missing'
     }, qa.word)
-    if (clicked) return { done: false }
-    // options not mounted yet (transition/HMR) — re-poll fresh state
-    await page.waitForTimeout(500)
-    const fresh = await page.evaluate(() => window.__qa ?? null)
-    if (!fresh || fresh.phase === 'done') return { done: fresh?.phase === 'done' }
-    if (fresh.word !== qa.word) return { done: false } // round moved on, re-answer
+    if (r === 'clicked') return { done: false }
+    await page.waitForTimeout(250)
   }
-  throw new Error(`${game.id}: no button for word "${qa.word}"`)
+  throw new Error(`${game.id}: could not complete round (stale state)`)
 }
 
 async function playGame(vite, browser, game, vp, url) {
   const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } })
   const page = await context.newPage()
   const errors = []
-  page.on('console', m => { if (m.type() === 'error') errors.push(m.text()) })
+  page.on('console', m => {
+    if (m.type() === 'error') errors.push(m.text())
+    if (process.env.QA_DEBUG) console.error('[page]', m.type(), m.text().slice(0, 200))
+  })
   page.on('pageerror', e => errors.push(String(e)))
 
   const tag = `${game.id}-${vp.name}`
@@ -187,7 +175,7 @@ console.log('vite dev server up on :5199')
 const browser = await chromium.launch()
 
 // dashboard smoke (shared chrome changed too)
-{
+if (!ONLY || ONLY.includes('dashboard')) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
   const page = await context.newPage()
   const errors = []
@@ -202,6 +190,7 @@ const browser = await chromium.launch()
 
 for (const vp of VIEWPORTS) {
   for (const game of GAMES) {
+    if (ONLY && !ONLY.includes(game.id)) continue
     console.log(`playing ${game.id} @ ${vp.name}…`)
     try {
       results.push(await playGame(vite, browser, game, vp, `http://localhost:5199/gamifyschool/#/english/play/0/${game.id}`))
