@@ -1,4 +1,4 @@
-import { BookOpen, Trophy, ArrowLeft, RefreshCw } from 'lucide-react'
+import { BookOpen, Trophy, ArrowLeft, RefreshCw, Medal } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { HashRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import { useProgress } from './hooks/useProgress'
@@ -33,6 +33,7 @@ import RocketLaunch from './games/RocketLaunch'
 import RacerWords from './games/RacerWords'
 import TreasureMap from './games/TreasureMap'
 import { playGameStart } from './hooks/useSound'
+import { rankFor } from './games/shared/ranks'
 import SubjectChooser from './components/SubjectChooser'
 import MathApp from './MathApp'
 
@@ -345,6 +346,17 @@ function GameView({
                   ⭐
                 </span>
               ))}
+            </div>
+
+            {/* Mission rank ceremony */}
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-3 border-amber-300 rounded-2xl py-3 px-5 flex items-center justify-center gap-3 shadow-sm animate-bounce-in">
+              <Medal className="w-9 h-9 text-amber-500" strokeWidth={2.2} />
+              <div className="text-left">
+                <p className="text-[11px] tracking-widest text-amber-500 font-extrabold uppercase">Mission Rank</p>
+                <p className="text-xl font-extrabold text-clay-text leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
+                  {rankFor(gameId || '', stars3 ? 3 : stars2 ? 2 : 1)}
+                </p>
+              </div>
             </div>
 
             <p className="text-xl text-clay-text-muted font-bold">

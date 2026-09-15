@@ -43,6 +43,8 @@ export interface GameStats {
 export interface GameDefinition {
   id: string
   title: string
+  /** Optional sprite art (public/assets path) shown in the game picker. */
+  art?: string
   emoji: string
   description: string
   color: string
@@ -93,10 +95,10 @@ export const GAME_DEFINITIONS: GameDefinition[] = [
   { id: 'categorysort', title: 'Army Barracks', emoji: '🪖', description: 'Sort word-soldiers into the right battalions!', color: '#059669', bgColor: 'from-emerald-600 to-green-800' },
   { id: 'phonicsrocket', title: 'Rocket Launch', emoji: '🚀', description: 'Find the fuel word to blast off into space!', color: '#7C3AED', bgColor: 'from-indigo-600 to-violet-900' },
   { id: 'comprehensionmap', title: 'Quest Journal', emoji: '🗺️', description: 'Read the quest log and answer to advance!', color: '#D97706', bgColor: 'from-amber-500 to-yellow-700' },
-  { id: 'jetfighter', title: 'Jet Strike', emoji: '✈️', description: 'Tap green targets — dodge red ones!', color: '#0284C7', bgColor: 'from-sky-500 to-blue-700' },
-  { id: 'targetblast', title: 'UFO Blast', emoji: '🛸', description: 'Blast the UFO carrying the word you hear!', color: '#0EA5E9', bgColor: 'from-sky-400 to-indigo-600' },
-  { id: 'troopmarch', title: 'Word Army', emoji: '🪖', description: 'Recruit tanks to your base — become a General!', color: '#16A34A', bgColor: 'from-green-500 to-emerald-700' },
-  { id: 'rocketlaunch', title: 'Mission Blast Off', emoji: '🚀', description: 'Fuel the rocket and fly to the moon!', color: '#F97316', bgColor: 'from-orange-400 to-red-600' },
-  { id: 'racerwords', title: 'Turbo Word Race', emoji: '🏁', description: 'Boost your race car with the right words!', color: '#DC2626', bgColor: 'from-red-500 to-rose-700' },
-  { id: 'treasuremap', title: 'Pirate Quest', emoji: '🏴‍☠️', description: 'Answer, then sail your pirate to the treasure!', color: '#D97706', bgColor: 'from-amber-400 to-orange-600' },
+  { id: 'jetfighter', title: 'Jet Strike', emoji: '✈️', description: 'Spell words by shooting letter-ships — then down the Red Baron!', color: '#0284C7', bgColor: 'from-sky-500 to-blue-700', art: 'assets/ships/player.png' },
+  { id: 'targetblast', title: 'UFO Blast', emoji: '🛸', description: 'Blast the UFO carrying the word you hear — then the MOTHERSHIP!', color: '#0EA5E9', bgColor: 'from-sky-400 to-indigo-600', art: 'assets/ufo/ufoBlue.png' },
+  { id: 'troopmarch', title: 'Word Army', emoji: '🪖', description: 'Recruit word-tanks, capture the Enemy General — become a General!', color: '#16A34A', bgColor: 'from-green-500 to-emerald-700', art: 'assets/tanks/blue.png' },
+  { id: 'rocketlaunch', title: 'Mission Blast Off', emoji: '🚀', description: 'Fuel the rocket, launch to the Moon and plant your flag!', color: '#F97316', bgColor: 'from-orange-400 to-red-600', art: 'assets/rockets/rocket.png' },
+  { id: 'racerwords', title: 'Turbo Word Race', emoji: '🏁', description: 'Beat THUNDER over 3 laps — nitro charged by word streaks!', color: '#DC2626', bgColor: 'from-red-500 to-rose-700', art: 'assets/cars/player.png' },
+  { id: 'treasuremap', title: 'Pirate Quest', emoji: '🏴‍☠️', description: 'Sail 3 islands, blast the Kraken, claim the treasure!', color: '#D97706', bgColor: 'from-amber-400 to-orange-600', art: 'assets/powerups/star_gold.png' },
 ]

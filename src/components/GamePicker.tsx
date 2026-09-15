@@ -66,7 +66,13 @@ export default function GamePicker({ onSelectUnit, onSelectGame, unitIndex }: Pr
               onClick={() => onSelectGame(game, unitIndex)}
               className="clay-card-interactive p-4 text-center"
             >
-              <div className="text-4xl mb-2">{game.emoji}</div>
+              <div className="h-14 mb-2 flex items-center justify-center">
+                {game.art ? (
+                  <img src={`${import.meta.env.BASE_URL}${game.art}`} alt="" className="max-h-14 w-auto drop-shadow-lg animate-float" loading="lazy" />
+                ) : (
+                  <span className="text-4xl">{game.emoji}</span>
+                )}
+              </div>
               <p className="text-clay-text font-extrabold text-base leading-tight" style={{ fontFamily: 'var(--font-display)' }}>{game.title}</p>
               <p className="text-clay-text-muted text-xs mt-1 font-semibold">{game.description}</p>
             </button>
