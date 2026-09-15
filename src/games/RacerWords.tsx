@@ -1,15 +1,25 @@
 import { useEffect, useRef, useState } from 'react'
-import { playCorrect, playWrong, playClick, playLevelUp, speak } from '../hooks/useSound'
-import { Volume2, Flag } from 'lucide-react'
+import { playCorrect, playWrong, playClick, playExplosion, playPowerup, playComboStreak, playFanfare, playLevelUp, playMissionSting, playWarn, speak } from '../hooks/useSound'
+import { Flag, Ear, Zap, Flame, Volume2 } from 'lucide-react'
 import { makeRounds, ASSET, type Round } from './shared/wordBank'
+import { GameHud, MissionBriefing } from './shared/arcade/GameHud'
+import {
+  loadSprites, drawSprite, Particles, Shaker, Floaters, comboCallout,
+} from './shared/arcade/engine'
+import type { SpriteBank } from './shared/arcade/engine'
+import { qaExpose } from './shared/qa'
 
 interface Props { words: string[]; onCorrect: () => void; onWrong: () => void; onComplete: () => void }
 
-const CAR_SPRITES = ['cars/player.png', 'cars/ai1.png', 'cars/ai2.png', 'cars/ai3.png']
-const CAR_NAMES = ['You', 'Bolt', 'Flash', 'Zoom']
+const CAR_SPRITES = ['cars/player.png', 'cars/ai2.png', 'cars/ai1.png', 'cars/ai3.png']
+const CAR_NAMES = ['YOU', 'THUNDER', 'Rosie', 'Zoom']
+const RIVAL = 1
 const FINISH = 0.92
-const BOOST = 0.125          // progress per correct answer
-const AI_BASE = 0.0000095    // AI progress per ms (~80s to finish)
+const BOOST = 0.125
+const NITRO_BOOST = 0.1
+const AI_BASE = 0.0000095
+const LAP_MARKS = [0.3, 0.6]
+const LAPS_TOTAL = 3
 
 type Car = { prog: number; vel: number; spin: number; lane: number }
 
@@ -19,13 +29,26 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
   const [roundIdx, setRoundIdx] = useState(0)
   const [answered, setAnswered] = useState(false)
   const [chosen, setChosen] = useState<string | null>(null)
-  const [result, setResult] = useState<number | null>(null) // player finishing place, 1-based
+  const [nitro, setNitro] = useState(0)
+  const [tires, setTires] = useState(3)
+  const [lap, setLap] = useState(1)
+  const [result, setResult] = useState<number | null>(null)
+  const [hudScore, setHudScore] = useState(0)
+
   const roundsRef = useRef<Round[]>([])
   if (roundsRef.current.length === 0) roundsRef.current = makeRounds(words, 40, 3)
   const carsRef = useRef<Car[]>([])
   const finishedRef = useRef(false)
+  const nitroRef = useRef(0)
+  const tiresRef = useRef(3)
+  const lapRef = useRef(1)
+  const streakRef = useRef(0)
+  const scoreRef = useRef(0)
+  const fxRef = useRef<{ particles: Particles; shaker: Shaker; floaters: Floaters } | null>(null)
 
   const round = roundsRef.current.length ? roundsRef.current[roundIdx % roundsRef.current.length] : undefined
+
+  const startMission = () => { playMissionSting(); setStarted(true) }
 
   useEffect(() => {
     if (!started || result !== null) return
@@ -34,39 +57,58 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
 
   useEffect(() => {
     if (!started) return
-    setRoundIdx(0); setAnswered(false); setChosen(null); setResult(null)
+    setRoundIdx(0); setAnswered(false); setChosen(null); setResult(null); setNitro(0); setTires(3); setLap(1); setHudScore(0)
     finishedRef.current = false
-    carsRef.current = [0, 1, 2, 3].map(lane => ({
-      prog: 0, vel: 0, spin: 0, lane,
-    }))
+    nitroRef.current = 0; tiresRef.current = 3; lapRef.current = 1; streakRef.current = 0; scoreRef.current = 0
+    carsRef.current = [0, 1, 2, 3].map(lane => ({ prog: 0, vel: 0, spin: 0, lane }))
 
     const cvs = canvasRef.current!
     const ctx = cvs.getContext('2d')!
-    const dpr = window.devicePixelRatio || 1
+    const dpr = Math.min(2, window.devicePixelRatio || 1)
     const W = (cvs.width = cvs.clientWidth * dpr)
     const H = (cvs.height = cvs.clientHeight * dpr)
 
-    const sprites: Record<string, HTMLImageElement> = {}
-    CAR_SPRITES.forEach(p => { const img = new Image(); img.src = ASSET(`assets/${p}`); sprites[p] = img })
+    const bank: SpriteBank = loadSprites(CAR_SPRITES.map(c => `cars/${c}`))
     const road = new Image(); road.src = ASSET('assets/road/roadTile1.png')
     const grass = new Image(); grass.src = ASSET('assets/road/terrain.png')
     const speedFx = new Image(); speedFx.src = ASSET('assets/fx/speed.png')
 
-    // per-AI pace multipliers, randomized each race
-    const aiPace = [0, 0.9 + Math.random() * 0.25, 0.85 + Math.random() * 0.3, 0.95 + Math.random() * 0.2]
+    const particles = new Particles()
+    const shaker = new Shaker()
+    const floaters = new Floaters()
+    fxRef.current = { particles, shaker, floaters }
+
+    // rival rubber-band pace: speeds up when behind, chills when ahead
+    const aiPace = [0, 1.02 + Math.random() * 0.18, 0.85 + Math.random() * 0.25, 0.92 + Math.random() * 0.22]
 
     let raf = 0
     let last = performance.now()
+    let dashOffset = 0
 
     const laneY = (lane: number) => H * (0.18 + lane * 0.21)
     const progX = (p: number) => W * (0.06 + p * 0.86)
+
+    const fireNitro = () => {
+      if (nitroRef.current <= 0 || finishedRef.current) return
+      nitroRef.current -= 1
+      setNitro(nitroRef.current)
+      const me = carsRef.current[0]
+      me.vel += NITRO_BOOST / 170 * 1.6
+      playPowerup()
+      shaker.add(0.25)
+      const y = laneY(0)
+      particles.burst(progX(me.prog) - 20 * dpr, y, { count: 20, colors: ['#F97316', '#FECA57', '#EF4444'], speed: 6, size: 5, angle: Math.PI, spread: 1, life: 600, grav: 0 })
+      floaters.add(progX(me.prog), y - 40 * dpr, 'NITRO!!', { color: '#F97316', size: 26 })
+    }
+    // expose nitro to the React button via canvas ref dataset
+    ;(cvs as unknown as { __nitro?: () => void }).__nitro = fireNitro
 
     const draw = (now: number) => {
       const dt = Math.min(40, now - last)
       last = now
       const cars = carsRef.current
 
-      // grass borders
+      // ---- track
       const tile = 48 * dpr
       if (grass.complete && grass.naturalWidth) {
         for (let x = 0; x < W; x += tile) {
@@ -74,21 +116,24 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
           ctx.drawImage(grass, x, H - tile / 2, tile, tile / 2)
         }
       } else { ctx.fillStyle = '#4ADE80'; ctx.fillRect(0, 0, W, H) }
-      // road body
       if (road.complete && road.naturalWidth) {
         for (let x = 0; x < W; x += tile)
           for (let y = tile / 2; y < H - tile / 2; y += tile)
             ctx.drawImage(road, x, y, tile, tile)
       } else { ctx.fillStyle = '#475569'; ctx.fillRect(0, tile / 2, W, H - tile) }
-      // lane dashes
+
+      // moving lane dashes (speed feel)
+      dashOffset = (dashOffset + dt * 0.05 * (1 + cars[0].vel * 4000)) % (34 * dpr)
       ctx.strokeStyle = 'rgba(255,255,255,0.55)'
       ctx.lineWidth = 3 * dpr
       ctx.setLineDash([18 * dpr, 16 * dpr])
+      ctx.lineDashOffset = -dashOffset
       for (let l = 1; l < 4; l++) {
         const y = (laneY(l - 1) + laneY(l)) / 2
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke()
       }
       ctx.setLineDash([])
+
       // finish line (checkered)
       const fx = progX(FINISH)
       const sq = 9 * dpr
@@ -98,60 +143,105 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
           ctx.fillRect(fx + i * sq, y, sq, sq)
         }
       }
+      // lap marker posts
+      for (const m of LAP_MARKS) {
+        const lx = progX(m)
+        ctx.fillStyle = 'rgba(253,224,71,0.9)'
+        ctx.fillRect(lx - 2 * dpr, 0, 4 * dpr, H)
+      }
 
-      // move cars
+      ctx.save()
+      shaker.update(dt)
+      shaker.apply(ctx, dpr)
+
+      // ---- move cars
       let anyFinish = false
       for (const c of cars) {
         if (c.lane === 0) {
-          // player: velocity from boosts, eased
           c.prog += c.vel * dt
           c.vel *= Math.pow(0.994, dt)
         } else {
-          c.prog += AI_BASE * aiPace[c.lane] * dt * (0.8 + 0.4 * Math.sin(now / 900 + c.lane * 2))
+          let pace = aiPace[c.lane]
+          if (c.lane === RIVAL) {
+            // rubber-band rival: accelerates in lap 3 and when behind the player
+            const behind = cars[0].prog - c.prog
+            pace *= lapRef.current === LAPS_TOTAL ? 1.18 : 1
+            pace *= behind > 0.12 ? 1.22 : behind < -0.12 ? 0.88 : 1
+          }
+          c.prog += AI_BASE * pace * dt * (0.8 + 0.4 * Math.sin(now / 900 + c.lane * 2))
         }
         if (c.spin > 0) c.spin = Math.max(0, c.spin - dt)
         if (c.prog >= FINISH) anyFinish = true
       }
 
-      // draw cars
+      // lap banners for the player
+      if (lapRef.current === 1 && cars[0].prog >= LAP_MARKS[0]) {
+        lapRef.current = 2; setLap(2)
+        floaters.banner('LAP 2/3', 'Engine upgrade — keep tapping!')
+        playLevelUp()
+      } else if (lapRef.current === 2 && cars[0].prog >= LAP_MARKS[1]) {
+        lapRef.current = 3; setLap(3)
+        floaters.banner('FINAL LAP!', 'THUNDER is catching up!')
+        playWarn()
+      }
+
+      // ---- draw cars
       for (const c of cars) {
         const x = progX(Math.min(c.prog, FINISH))
         const y = laneY(c.lane)
-        const img = sprites[CAR_SPRITES[c.lane]]
-        const cw = 30 * dpr, ch = 56 * dpr
-        // boost streaks behind player
-        if (c.lane === 0 && c.vel > 0.00004 && speedFx.complete && speedFx.naturalWidth) {
-          ctx.save(); ctx.translate(x - 34 * dpr, y); ctx.rotate(-Math.PI / 2); ctx.globalAlpha = 0.8
-          ctx.drawImage(speedFx, -4 * dpr, -30 * dpr, 8 * dpr, 60 * dpr)
-          ctx.restore(); ctx.globalAlpha = 1
+        const rival = c.lane === RIVAL
+        const cw = (rival ? 38 : 30) * dpr, ch = (rival ? 66 : 56) * dpr
+        // boost flames for player at speed
+        if (c.lane === 0 && c.vel > 0.00004) {
+          particles.burst(x - 16 * dpr, y, { count: 1, colors: ['#F97316', '#FECA57'], speed: 1.5, size: 3, angle: Math.PI, spread: 0.5, life: 300, grav: 0 })
+        }
+        if (rival) {
+          // rival red glow + sparks
+          ctx.save()
+          ctx.globalAlpha = 0.3 + 0.12 * Math.sin(now / 200)
+          ctx.fillStyle = '#EF4444'
+          ctx.beginPath(); ctx.ellipse(x, y, cw * 0.9, ch * 0.62, 0, 0, Math.PI * 2); ctx.fill()
+          ctx.restore()
         }
         ctx.save()
         ctx.translate(x, y)
         ctx.rotate(Math.PI / 2 + (c.spin > 0 ? (1 - c.spin / 900) * Math.PI * 4 : 0))
-        if (img.complete && img.naturalWidth) ctx.drawImage(img, -cw / 2, -ch / 2, cw, ch)
-        else { ctx.fillStyle = c.lane === 0 ? '#3B82F6' : '#EF4444'; ctx.fillRect(-cw / 2, -ch / 2, cw, ch) }
+        drawSprite(ctx, bank, `cars/${CAR_SPRITES[c.lane]}`, 0, 0, cw, ch, { fallback: c.lane === 0 ? '#3B82F6' : '#EF4444' })
         ctx.restore()
-        // name tag
-        ctx.font = `bold ${12 * dpr}px Fredoka, sans-serif`
-        ctx.fillStyle = c.lane === 0 ? '#FDE047' : 'rgba(255,255,255,0.85)'
+        ctx.font = `900 ${(rival ? 13 : 12) * dpr}px Fredoka, sans-serif`
+        ctx.fillStyle = rival ? '#FCA5A5' : c.lane === 0 ? '#FDE047' : 'rgba(255,255,255,0.85)'
         ctx.textAlign = 'center'
-        ctx.fillText(CAR_NAMES[c.lane], x, y - 34 * dpr)
+        ctx.fillText(CAR_NAMES[c.lane], x, y - (rival ? 40 : 34) * dpr)
       }
 
-      // finish detection
+      particles.update(dt, dpr)
+      particles.draw(ctx, dpr)
+      floaters.update(dt, dpr)
+      floaters.draw(ctx, W, H, dpr)
+      ctx.restore()
+
+      // ---- finish detection
       if (anyFinish && !finishedRef.current) {
         finishedRef.current = true
         const order = [...cars].sort((a, b) => b.prog - a.prog)
         const place = order.findIndex(c => c.lane === 0) + 1
         setResult(place)
-        if (place === 1) playLevelUp(); else playClick()
-        setTimeout(onComplete, 2200)
+        qaExpose({ game: 'racerwords', phase: 'done' })
+        if (place === 1) { playFanfare(); floaters.banner('CHEQUERED FLAG!', 'You win the race!') }
+        else { playClick(); floaters.banner(`FINISHED ${place}${place === 2 ? 'ND' : place === 3 ? 'RD' : 'TH'}!`, 'Rematch, champion?') }
+        setTimeout(onComplete, 2600)
       }
 
       raf = requestAnimationFrame(draw)
     }
     raf = requestAnimationFrame(draw)
-    return () => cancelAnimationFrame(raf)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      fxRef.current = null
+      delete (cvs as unknown as { __nitro?: () => void }).__nitro
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [started])
 
   const handleAnswer = (opt: string) => {
@@ -160,66 +250,101 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
     const player = carsRef.current[0]
     if (opt === round.word) {
       playCorrect(); onCorrect()
-      // impulse that integrates to ~BOOST progress with the decay in the loop
+      streakRef.current += 1
+      scoreRef.current += 10 + Math.min(25, (streakRef.current - 1) * 5)
+      setHudScore(scoreRef.current)
+      const callout = comboCallout(streakRef.current)
+      if (callout) { fxRef.current?.floaters.banner(callout); playComboStreak(streakRef.current) }
+      if (streakRef.current % 3 === 0 && nitroRef.current < 2) {
+        nitroRef.current += 1
+        setNitro(nitroRef.current)
+        playPowerup()
+        fxRef.current?.floaters.add(0.3 * 640, lane0Y(), 'NITRO CHARGED!', { color: '#F97316', size: 22 })
+      }
       player.vel += BOOST / 170
       setTimeout(() => { setAnswered(false); setChosen(null); setRoundIdx(i => i + 1) }, 450)
     } else {
       playWrong(); onWrong()
       player.spin = 900
       player.vel = 0
+      tiresRef.current = Math.max(0, tiresRef.current - 1)
+      setTires(tiresRef.current)
+      streakRef.current = 0
+      playExplosion(0.25)
+      fxRef.current?.shaker.add(0.3)
       setTimeout(() => { setAnswered(false); setChosen(null); setRoundIdx(i => i + 1) }, 1200)
     }
   }
 
+  const lane0Y = () => {
+    const cvs = canvasRef.current
+    return cvs ? cvs.clientHeight * 0.18 : 100
+  }
+
+  const fireNitroFromReact = () => {
+    const cvs = canvasRef.current
+    const fn = cvs ? (cvs as unknown as { __nitro?: () => void }).__nitro : null
+    fn?.()
+  }
+
   if (!started) {
     return (
-      <div className="clay-card p-6 max-w-md mx-auto text-center space-y-4">
-        <div className="text-6xl">🏎️</div>
-        <h2 className="text-2xl font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>Turbo Word Race</h2>
-        <div className="text-clay-text-muted text-base font-semibold space-y-2 text-left">
-          <p>🏁 The other cars never stop — be quick!</p>
-          <p>👂 Listen to the word and look at the picture.</p>
-          <p>⚡ Tap the right word for a TURBO BOOST!</p>
-          <p>💫 Wrong word = spin out! Reach the finish first!</p>
-        </div>
-        <button onClick={() => setStarted(true)} className="clay-button px-8 py-4 text-xl font-extrabold w-full" style={{ fontFamily: 'var(--font-display)' }}>
-          🏁 Start Your Engine!
-        </button>
-      </div>
+      <MissionBriefing
+        title="Turbo Word Race"
+        callsign="Championship Grand Prix"
+        hero="🏎️"
+        gradient="from-red-950 via-orange-950 to-slate-900"
+        orders={[
+          { icon: Ear, text: 'Listen to the word and check the picture!' },
+          { icon: Zap, text: 'Tap the right word for a TURBO BOOST!' },
+          { icon: Flame, text: 'Every 3 in a row charges a NITRO button — tap it to fly!' },
+          { icon: Volume2, text: 'Wrong word = spin out and lose a tire. Watch out for THUNDER!' },
+          { icon: Flag, text: 'Beat THUNDER and the others over 3 laps to win the cup!' },
+        ]}
+        cta="🏁 Start Your Engine"
+        onStart={startMission}
+      />
     )
   }
 
+  const prompt = result === null && round ? { emoji: round.emoji, onHear: () => speak(round.word) } : null
+
   return (
     <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-3">
-      <div className="clay-card px-4 py-2 w-full flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>
-          <Flag className="w-5 h-5 text-clay-cta" strokeWidth={2.5} /> Race!
-        </div>
-        {round && result === null && (
-          <div className="flex items-center gap-3">
-            <span className="text-4xl">{round.emoji ?? '❔'}</span>
-            <button onClick={() => speak(round.word)}
-              className="clay-card-interactive flex items-center gap-2 px-4 py-2 rounded-2xl font-extrabold text-clay-text border-3 border-white/80"
-              style={{ fontFamily: 'var(--font-display)' }}>
-              <Volume2 className="w-6 h-6 text-clay-primary" strokeWidth={2.5} /> Hear it
+      <GameHud
+        statIcon={Flag}
+        statLabel={`Lap ${lap}/${LAPS_TOTAL}`}
+        statColor="text-clay-cta"
+        shields={tires}
+        prompt={prompt}
+        progress={`${hudScore} pts`}
+      />
+      <canvas ref={canvasRef} className="w-full rounded-2xl border-4 border-white shadow-clay-card"
+        style={{ aspectRatio: '16 / 9', maxHeight: '46vh', background: '#475569', touchAction: 'none' }} />
+      {result === null && round ? (
+        <div className="w-full space-y-2">
+          <div className="flex gap-2 justify-center flex-wrap">
+            {round.options.map((opt, i) => {
+              const isRight = opt === round.word
+              let cls = 'min-h-[54px] min-w-[110px] px-5 py-3 rounded-2xl text-xl font-extrabold transition-all duration-200 border-3'
+              if (answered) {
+                if (isRight) cls += ' clay-card border-clay-success/30 animate-pop-in'
+                else if (chosen === opt) cls += ' bg-clay-error/20 text-clay-error animate-wiggle border-clay-error/30'
+                else cls += ' bg-white/30 opacity-40 border-white/20'
+              } else cls += ' clay-card-interactive border-white/80 text-clay-text'
+              return <button key={`${roundIdx}-${i}`} onClick={() => handleAnswer(opt)} disabled={answered} className={cls} style={{ fontFamily: 'var(--font-display)' }}>{opt}</button>
+            })}
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={fireNitroFromReact}
+              disabled={nitro === 0 || answered}
+              className={`px-8 py-3 rounded-2xl text-xl font-extrabold border-3 transition-all ${nitro > 0 && !answered ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-white/80 shadow-clay-button animate-pulse-soft hover:scale-105 active:scale-95' : 'bg-white/40 text-clay-text-muted/50 border-white/30'}`}
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              🔥 NITRO! ({nitro})
             </button>
           </div>
-        )}
-      </div>
-      <canvas ref={canvasRef} className="w-full rounded-2xl border-4 border-white shadow-clay-card"
-        style={{ aspectRatio: '16 / 9', maxHeight: '48vh', background: '#475569', touchAction: 'none' }} />
-      {result === null && round ? (
-        <div className="flex gap-2 justify-center flex-wrap w-full">
-          {round.options.map((opt, i) => {
-            const isRight = opt === round.word
-            let cls = 'min-h-[54px] min-w-[110px] px-5 py-3 rounded-2xl text-xl font-extrabold transition-all duration-200 border-3'
-            if (answered) {
-              if (isRight) cls += ' clay-card border-clay-success/30 animate-pop-in'
-              else if (chosen === opt) cls += ' bg-clay-error/20 text-clay-error animate-wiggle border-clay-error/30'
-              else cls += ' bg-white/30 opacity-40 border-white/20'
-            } else cls += ' clay-card-interactive border-white/80 text-clay-text'
-            return <button key={`${roundIdx}-${i}`} onClick={() => handleAnswer(opt)} disabled={answered} className={cls} style={{ fontFamily: 'var(--font-display)' }}>{opt}</button>
-          })}
         </div>
       ) : result !== null && (
         <div className="clay-card p-5 text-center animate-pop-in space-y-2">
