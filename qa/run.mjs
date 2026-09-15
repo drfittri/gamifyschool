@@ -42,43 +42,37 @@ async function pollQa(page, timeoutMs = 30000) {
   return null
 }
 
-async function answerOnce(page, game, vp) {
-  // Always act on FRESH state: re-poll before every attempt so a transition
-  // (answered window, move phase, cinematic) never leaves us clicking stale
-  // targets like a wedged robot.
-  for (let attempt = 0; attempt < 24; attempt++) {
-    const qa = await page.evaluate(() => window.__qa ?? null)
-    if (!qa) { await page.waitForTimeout(250); continue }
-    if (qa.phase === 'done') return { done: true }
-    if (qa.phase === 'cinematic' || qa.phase === 'briefing') { await page.waitForTimeout(300); continue }
+async function answerOnce(page, game) {
+  // Single-shot attempt on FRESH state — the main loop owns cadence and the
+  // progress watchdog. Never retries with a stale snapshot.
+  const qa = await page.evaluate(() => window.__qa ?? null)
+  if (!qa) return { done: false, progress: false }
+  if (qa.phase === 'done') return { done: true, progress: true }
+  if (qa.phase === 'cinematic' || qa.phase === 'briefing') return { done: false, progress: true }
 
-    if (qa.phase === 'move') {
-      const dir = qa.bestMove ?? 'right'
-      const btn = page.locator(`[data-qa="${dir}"]`)
-      if (await btn.count()) { await btn.click(); return { done: false } }
-      await page.waitForTimeout(250)
-      continue
-    }
-
-    if (game.canvas) {
-      if (!qa.point) { await page.waitForTimeout(250); continue }
-      const box = await page.locator('canvas').boundingBox()
-      if (!box) { await page.waitForTimeout(250); continue }
-      await page.mouse.click(box.x + qa.point.x, box.y + qa.point.y)
-      return { done: false }
-    }
-
-    const r = await page.evaluate((word) => {
-      const btn = [...document.querySelectorAll('button')].find(
-        b => !b.disabled && (b.textContent || '').trim() === word,
-      )
-      if (btn) { btn.click(); return 'clicked' }
-      return 'missing'
-    }, qa.word)
-    if (r === 'clicked') return { done: false }
-    await page.waitForTimeout(250)
+  if (qa.phase === 'move') {
+    const dir = qa.bestMove ?? 'right'
+    const btn = page.locator(`[data-qa="${dir}"]`)
+    if (await btn.count()) { await btn.click(); return { done: false, progress: true } }
+    return { done: false, progress: false }
   }
-  throw new Error(`${game.id}: could not complete round (stale state)`)
+
+  if (game.canvas) {
+    if (!qa.point) return { done: false, progress: false }
+    const box = await page.locator('canvas').boundingBox()
+    if (!box) return { done: false, progress: false }
+    await page.mouse.click(box.x + qa.point.x, box.y + qa.point.y)
+    return { done: false, progress: true }
+  }
+
+  const r = await page.evaluate((word) => {
+    const btn = [...document.querySelectorAll('button')].find(
+      b => !b.disabled && (b.textContent || '').trim() === word,
+    )
+    if (btn) { btn.click(); return 'clicked' }
+    return 'missing'
+  }, qa.word)
+  return { done: false, progress: r === 'clicked' }
 }
 
 async function playGame(vite, browser, game, vp, url) {
@@ -117,22 +111,36 @@ async function playGame(vite, browser, game, vp, url) {
   })
   if (!started) throw new Error(`${game.id}: no briefing start button`)
 
-  // play until done (safety-capped)
+  // play until done (safety-capped + progress watchdog)
   let midShot = false
   let bossShot = false
+  let lastState = ''
+  let staleCalls = 0
   const deadline = Date.now() + 150000
   while (Date.now() < deadline) {
-    const res = await answerOnce(page, game, vp)
+    const res = await answerOnce(page, game)
     if (res.done) break
-    report.answers++
-    if (!midShot && report.answers >= 2) { await shot('02-midgame'); report.screenshots.push('02-midgame'); midShot = true }
     const qaNow = await page.evaluate(() => window.__qa ?? null)
+    const state = qaNow ? `${qaNow.phase}:${qaNow.word ?? ''}:${qaNow.bestMove ?? ''}` : 'null'
+    if (state === lastState && !res.progress) staleCalls++
+    else { staleCalls = 0; lastState = state }
+    if (staleCalls > 60) {
+      const dump = await page.evaluate(() => ({
+        qa: window.__qa ?? null,
+        buttons: [...document.querySelectorAll('button')].map(b => ({ t: (b.textContent || '').trim(), d: b.disabled })),
+        url: location.href,
+      }))
+      throw new Error(`${game.id}: no progress for 30s — ${JSON.stringify(dump).slice(0, 600)}`)
+    }
+    if (res.progress && !qaNow?.word?.length || (res.progress && qaNow?.phase === 'playing')) report.answers++
+    if (report.answers >= 2 && !midShot) { await shot('02-midgame'); report.screenshots.push('02-midgame'); midShot = true }
     if (!bossShot && qaNow?.phase === 'boss') {
       await page.waitForTimeout(900)
       await shot('03-boss')
       report.screenshots.push('03-boss')
       bossShot = true
     }
+    await page.waitForTimeout(400)
   }
   report.sessionMs = Date.now() - t0
 

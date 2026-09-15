@@ -295,8 +295,9 @@ export default function TroopMarch({ words, onCorrect, onWrong, onComplete }: Pr
       return {
         word,
         sprite: general ? 3 : (i + roundIdx) % TANK_SPRITES.length,
-        x: general ? 0.5 : 0.17 + col * 0.27 + (row ? 0.06 : 0),
-        y: general ? 0.34 : (0.32 + row * 0.3 + (col ? 0.03 : 0)),
+        // boss wave: general alone at centre, decoys in a left column
+        x: general ? 0.52 : isBossWave ? 0.15 + row * 0.15 : 0.17 + col * 0.27 + (row ? 0.06 : 0),
+        y: general ? 0.34 : isBossWave ? 0.3 + col * 0.3 : (0.32 + row * 0.3 + (col ? 0.03 : 0)),
         tx: 0, ty: 0, driving: false, recruited: false, shake: 0, highlight: 0, general,
       }
     })

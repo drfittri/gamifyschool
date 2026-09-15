@@ -11,7 +11,7 @@ import { qaExpose } from './shared/qa'
 
 interface Props { words: string[]; onCorrect: () => void; onWrong: () => void; onComplete: () => void }
 
-const CAR_SPRITES = ['cars/player.png', 'cars/ai2.png', 'cars/ai1.png', 'cars/ai3.png']
+const CAR_SPRITES = ['player.png', 'ai2.png', 'ai1.png', 'ai3.png']
 const CAR_NAMES = ['YOU', 'THUNDER', 'Rosie', 'Zoom']
 const RIVAL = 1
 const FINISH = 0.92
@@ -72,8 +72,6 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
     const H = (cvs.height = cvs.clientHeight * dpr)
 
     const bank: SpriteBank = loadSprites(CAR_SPRITES.map(c => `cars/${c}`))
-    const road = new Image(); road.src = ASSET('assets/road/roadTile1.png')
-    const grass = new Image(); grass.src = ASSET('assets/road/terrain.png')
     const speedFx = new Image(); speedFx.src = ASSET('assets/fx/speed.png')
 
     const particles = new Particles()
@@ -111,19 +109,20 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
       last = now
       const cars = carsRef.current
 
-      // ---- track
-      const tile = 48 * dpr
-      if (grass.complete && grass.naturalWidth) {
-        for (let x = 0; x < W; x += tile) {
-          ctx.drawImage(grass, x, 0, tile, tile / 2)
-          ctx.drawImage(grass, x, H - tile / 2, tile, tile / 2)
-        }
-      } else { ctx.fillStyle = '#4ADE80'; ctx.fillRect(0, 0, W, H) }
-      if (road.complete && road.naturalWidth) {
-        for (let x = 0; x < W; x += tile)
-          for (let y = tile / 2; y < H - tile / 2; y += tile)
-            ctx.drawImage(road, x, y, tile, tile)
-      } else { ctx.fillStyle = '#475569'; ctx.fillRect(0, tile / 2, W, H - tile) }
+      // ---- track: grass borders + clean asphalt
+      const edge = 14 * dpr
+      ctx.fillStyle = '#4ADE80'
+      ctx.fillRect(0, 0, W, edge)
+      ctx.fillRect(0, H - edge, W, edge)
+      const asphalt = ctx.createLinearGradient(0, 0, 0, H)
+      asphalt.addColorStop(0, '#526075')
+      asphalt.addColorStop(0.5, '#414D5F')
+      asphalt.addColorStop(1, '#374151')
+      ctx.fillStyle = asphalt
+      ctx.fillRect(0, edge, W, H - edge * 2)
+      ctx.fillStyle = 'rgba(255,255,255,0.85)'
+      ctx.fillRect(0, edge, W, 2.5 * dpr)
+      ctx.fillRect(0, H - edge - 2.5 * dpr, W, 2.5 * dpr)
 
       // moving lane dashes (speed feel)
       dashOffset = (dashOffset + dt * 0.05 * (1 + cars[0].vel * 4000)) % (34 * dpr)
