@@ -103,6 +103,7 @@ export default function TreasureMap({ words, onCorrect, onWrong, onComplete }: P
 
   // QA exposure
   useEffect(() => {
+    if (!started) { qaExpose(null); return }
     if (mode === 'found') { qaExpose({ game: 'treasuremap', phase: 'done' }); return }
     if (mode === 'sailing') { qaExpose({ game: 'treasuremap', phase: 'cinematic' }); return }
     if (!round) return
@@ -114,7 +115,7 @@ export default function TreasureMap({ words, onCorrect, onWrong, onComplete }: P
       bestMove: mode === 'move' ? bestStep(obstacles, pos.x, pos.y) : undefined,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, roundIdx, pos.x, pos.y, krakenHp])
+  }, [started, mode, roundIdx, pos.x, pos.y, krakenHp])
 
   const handleAnswer = (opt: string) => {
     if (answered || !round || (mode !== 'question' && mode !== 'boss')) return

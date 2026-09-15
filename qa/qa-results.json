@@ -16,40 +16,80 @@
   {
     "game": "targetblast",
     "viewport": "desktop",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: targetblast: no button for word \"hi\""
+    "answers": 5858,
+    "shieldsLost": "n/a",
+    "sessionMs": 15664,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 65,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 245,
+        "h": 79
+      },
+      {
+        "label": "Play Again",
+        "w": 229,
+        "h": 79
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "troopmarch",
     "viewport": "desktop",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: troopmarch: no button for word \"friend\""
+    "answers": 5887,
+    "shieldsLost": "n/a",
+    "sessionMs": 15647,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 30,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 186,
+        "h": 60
+      },
+      {
+        "label": "Play Again",
+        "w": 174,
+        "h": 60
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "jetfighter",
     "viewport": "desktop",
-    "answers": 44985,
+    "answers": 53347,
     "shieldsLost": "n/a",
-    "sessionMs": 92096,
+    "sessionMs": 100864,
     "errors": [],
     "xpBefore": 0,
-    "xpAfter": 195,
+    "xpAfter": 210,
     "touchTargets": [
       {
         "label": "icon",
@@ -78,30 +118,68 @@
   {
     "game": "rocketlaunch",
     "viewport": "desktop",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: rocketlaunch: no button for word \"teacher\""
+    "answers": 7390,
+    "shieldsLost": "n/a",
+    "sessionMs": 18441,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 90,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 188,
+        "h": 61
+      },
+      {
+        "label": "Play Again",
+        "w": 176,
+        "h": 61
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "racerwords",
     "viewport": "desktop",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: racerwords: no __qa state"
+    "answers": 6529,
+    "shieldsLost": "n/a",
+    "sessionMs": 8082,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 90,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "treasuremap",
@@ -109,7 +187,7 @@
     "answers": 0,
     "sessionMs": 0,
     "errors": [
-      "Error: treasuremap: no button for word \"hi\""
+      "Error: treasuremap: no button for word \"afternoon\""
     ],
     "xpBefore": null,
     "xpAfter": null,
@@ -120,72 +198,170 @@
   {
     "game": "targetblast",
     "viewport": "tablet",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: targetblast: no button for word \"friend\""
+    "answers": 5707,
+    "shieldsLost": "n/a",
+    "sessionMs": 16064,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 90,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 242,
+        "h": 78
+      },
+      {
+        "label": "Play Again",
+        "w": 226,
+        "h": 78
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "troopmarch",
     "viewport": "tablet",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: troopmarch: no button for word \"bye\""
+    "answers": 5295,
+    "shieldsLost": "n/a",
+    "sessionMs": 14918,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 40,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 184,
+        "h": 59
+      },
+      {
+        "label": "Play Again",
+        "w": 172,
+        "h": 59
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "jetfighter",
     "viewport": "tablet",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: jetfighter: no button for word \"morning\""
+    "answers": 61151,
+    "shieldsLost": "n/a",
+    "sessionMs": 123501,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 235,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "rocketlaunch",
     "viewport": "tablet",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: rocketlaunch: no button for word \"teacher\""
+    "answers": 7050,
+    "shieldsLost": "n/a",
+    "sessionMs": 18520,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 90,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 184,
+        "h": 59
+      },
+      {
+        "label": "Play Again",
+        "w": 172,
+        "h": 59
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "racerwords",
     "viewport": "tablet",
-    "answers": 0,
-    "sessionMs": 0,
-    "errors": [
-      "Error: racerwords: no __qa state"
+    "answers": 6509,
+    "shieldsLost": "n/a",
+    "sessionMs": 8999,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 95,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
     ],
-    "xpBefore": null,
-    "xpAfter": null,
-    "touchTargets": [],
-    "screenshots": [],
-    "verdict": "FAIL"
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
   },
   {
     "game": "treasuremap",
@@ -193,7 +369,7 @@
     "answers": 0,
     "sessionMs": 0,
     "errors": [
-      "Error: treasuremap: no button for word \"name\""
+      "Error: treasuremap: no button for word \"goodbye\""
     ],
     "xpBefore": null,
     "xpAfter": null,
