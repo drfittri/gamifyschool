@@ -17,7 +17,7 @@ export function MuteButton() {
     <button
       onClick={() => setMuted(!m)}
       aria-label={m ? 'Unmute sounds' : 'Mute sounds'}
-      className="w-10 h-10 rounded-2xl bg-clay-surface border-2 border-white/70 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+      className="w-11 h-11 rounded-2xl bg-clay-surface border-2 border-white/70 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
     >
       {m ? <VolumeX className="w-5 h-5 text-clay-error" strokeWidth={2.5} /> : <Volume2 className="w-5 h-5 text-clay-primary" strokeWidth={2.5} />}
     </button>
@@ -113,28 +113,28 @@ export function MissionBriefing({ title, callsign, hero, heroImg, orders, cta, g
         ))}
       </div>
 
-      <div className="relative p-6 space-y-4">
+      <div className="relative px-5 py-5 space-y-3">
         <span className="inline-block bg-white/15 border-2 border-white/30 backdrop-blur-sm text-amber-300 font-extrabold text-xs tracking-widest px-3 py-1 rounded-full" style={{ fontFamily: 'var(--font-display)' }}>
           ⚡ MISSION BRIEFING
         </span>
 
-        <div className="flex items-end justify-center gap-3">
-          {heroImg && <img src={heroImg} alt="" className="w-20 h-20 object-contain drop-shadow-2xl animate-float hidden sm:block" />}
-          <span className="text-7xl drop-shadow-2xl animate-float" style={{ animationDelay: '0.3s' }}>{hero}</span>
+        <div className="flex items-end justify-center gap-3 -my-1">
+          {heroImg && <img src={heroImg} alt="" className="w-16 h-16 object-contain drop-shadow-2xl animate-float hidden sm:block" />}
+          <span className="text-6xl drop-shadow-2xl animate-float" style={{ animationDelay: '0.3s' }}>{hero}</span>
         </div>
 
         <div>
-          <p className="text-amber-300 font-extrabold text-sm tracking-widest uppercase" style={{ fontFamily: 'var(--font-display)' }}>{callsign}</p>
+          <p className="text-amber-300 font-extrabold text-xs tracking-widest uppercase" style={{ fontFamily: 'var(--font-display)' }}>{callsign}</p>
           <h2 className="text-3xl font-extrabold drop-shadow-md" style={{ fontFamily: 'var(--font-display)' }}>{title}</h2>
         </div>
 
-        <ul className="text-left space-y-2.5 bg-white/10 border-2 border-white/20 rounded-2xl p-4 backdrop-blur-sm">
+        <ul className="text-left space-y-2 bg-white/10 border-2 border-white/20 rounded-2xl px-3.5 py-3 backdrop-blur-sm">
           {orders.map((o, i) => (
-            <li key={i} className="flex items-start gap-3">
-              <span className="w-9 h-9 shrink-0 rounded-xl bg-white/20 border-2 border-white/25 flex items-center justify-center">
-                <o.icon className="w-5 h-5 text-amber-300" strokeWidth={2.5} />
+            <li key={i} className="flex items-start gap-2.5">
+              <span className="w-8 h-8 shrink-0 rounded-lg bg-white/20 border-2 border-white/25 flex items-center justify-center">
+                <o.icon className="w-4.5 h-4.5 text-amber-300" strokeWidth={2.5} />
               </span>
-              <span className="text-base font-bold leading-snug pt-1" style={{ fontFamily: 'var(--font-display)' }}>{o.text}</span>
+              <span className="text-[15px] font-bold leading-snug pt-1" style={{ fontFamily: 'var(--font-display)' }}>{o.text}</span>
             </li>
           ))}
         </ul>
@@ -146,7 +146,7 @@ export function MissionBriefing({ title, callsign, hero, heroImg, orders, cta, g
         >
           {cta}
         </button>
-        <div className="pb-1"><MuteButton /></div>
+        <div className="pb-1 flex justify-center"><MuteButton /></div>
       </div>
     </div>
   )

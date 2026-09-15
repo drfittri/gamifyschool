@@ -104,6 +104,7 @@ export default function TreasureMap({ words, onCorrect, onWrong, onComplete }: P
   // QA exposure
   useEffect(() => {
     if (mode === 'found') { qaExpose({ game: 'treasuremap', phase: 'done' }); return }
+    if (mode === 'sailing') { qaExpose({ game: 'treasuremap', phase: 'cinematic' }); return }
     if (!round) return
     qaExpose({
       game: 'treasuremap',
@@ -328,19 +329,19 @@ export default function TreasureMap({ words, onCorrect, onWrong, onComplete }: P
           <p className="text-lg font-extrabold text-clay-text" style={{ fontFamily: 'var(--font-display)' }}>⛵ Correct! Which way, captain?</p>
           <div className="grid grid-cols-3 gap-2 max-w-[200px] mx-auto">
             <div />
-            <button onClick={() => move(0, -1)} disabled={!canMove(0, -1)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
+            <button data-qa="up" onClick={() => move(0, -1)} disabled={!canMove(0, -1)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
               <ArrowUp className="w-7 h-7 text-clay-primary" strokeWidth={3} />
             </button>
             <div />
-            <button onClick={() => move(-1, 0)} disabled={!canMove(-1, 0)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
+            <button data-qa="left" onClick={() => move(-1, 0)} disabled={!canMove(-1, 0)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
               <ArrowLeft className="w-7 h-7 text-clay-primary" strokeWidth={3} />
             </button>
             <div className="flex items-center justify-center text-2xl">⛵</div>
-            <button onClick={() => move(1, 0)} disabled={!canMove(1, 0)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
+            <button data-qa="right" onClick={() => move(1, 0)} disabled={!canMove(1, 0)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
               <ArrowRight className="w-7 h-7 text-clay-primary" strokeWidth={3} />
             </button>
             <div />
-            <button onClick={() => move(0, 1)} disabled={!canMove(0, 1)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
+            <button data-qa="down" onClick={() => move(0, 1)} disabled={!canMove(0, 1)} className="clay-card-interactive min-h-[52px] rounded-2xl border-3 border-white/80 flex items-center justify-center disabled:opacity-25">
               <ArrowDown className="w-7 h-7 text-clay-primary" strokeWidth={3} />
             </button>
             <div />

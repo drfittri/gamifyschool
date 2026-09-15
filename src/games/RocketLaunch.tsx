@@ -159,7 +159,6 @@ export default function RocketLaunch({ words, onCorrect, onWrong, onComplete }: 
           setPhase('launch')
           floaters.banner('LIFTOFF!', 'To the Moon!')
           stopRumble = playRumble()
-          qaExpose({ game: 'rocketlaunch', phase: 'done' })
         }
         // countdown number
         ctx.font = `900 ${86 * dpr}px Fredoka, sans-serif`
@@ -214,6 +213,7 @@ export default function RocketLaunch({ words, onCorrect, onWrong, onComplete }: 
           floaters.banner('ONE SMALL STEP!', 'Mission complete, Commander!')
           // astronaut plants the flag
           setTimeout(() => { playFanfare() }, 900)
+          qaExpose({ game: 'rocketlaunch', phase: 'done' })
           setTimeout(onComplete, 3400)
         }
       }
@@ -326,7 +326,7 @@ export default function RocketLaunch({ words, onCorrect, onWrong, onComplete }: 
           animRef.current.phase = 'countdown'
           setPhase('countdown')
           fxRef.current?.floaters.banner('IGNITION!', 'Stand back, Commander!')
-          qaExpose({ game: 'rocketlaunch', phase: 'done' })
+          qaExpose({ game: 'rocketlaunch', phase: 'cinematic' })
         } else setRoundIdx(i => i + 1)
       }, 700)
     } else {

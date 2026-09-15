@@ -1,0 +1,204 @@
+[
+  {
+    "game": "dashboard",
+    "viewport": "desktop",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [
+      "dashboard-desktop.png"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "targetblast",
+    "viewport": "desktop",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: targetblast: no button for word \"hi\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "troopmarch",
+    "viewport": "desktop",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: troopmarch: no button for word \"friend\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "jetfighter",
+    "viewport": "desktop",
+    "answers": 44985,
+    "shieldsLost": "n/a",
+    "sessionMs": 92096,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 195,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "rocketlaunch",
+    "viewport": "desktop",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: rocketlaunch: no button for word \"teacher\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "racerwords",
+    "viewport": "desktop",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: racerwords: no __qa state"
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "treasuremap",
+    "viewport": "desktop",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: treasuremap: no button for word \"hi\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "targetblast",
+    "viewport": "tablet",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: targetblast: no button for word \"friend\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "troopmarch",
+    "viewport": "tablet",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: troopmarch: no button for word \"bye\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "jetfighter",
+    "viewport": "tablet",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: jetfighter: no button for word \"morning\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "rocketlaunch",
+    "viewport": "tablet",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: rocketlaunch: no button for word \"teacher\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "racerwords",
+    "viewport": "tablet",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: racerwords: no __qa state"
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  },
+  {
+    "game": "treasuremap",
+    "viewport": "tablet",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [
+      "Error: treasuremap: no button for word \"name\""
+    ],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [],
+    "verdict": "FAIL"
+  }
+]

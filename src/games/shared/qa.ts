@@ -5,7 +5,7 @@
 // Stripped from production builds by the import.meta.env.DEV guard.
 export interface QaState {
   game: string
-  phase: 'briefing' | 'playing' | 'boss' | 'move' | 'done'
+  phase: 'briefing' | 'playing' | 'boss' | 'move' | 'cinematic' | 'done'
   word?: string
   options?: string[]
   point?: { x: number; y: number }

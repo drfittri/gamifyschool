@@ -18,12 +18,12 @@ export interface SpriteBank {
   ok(path: string): boolean
 }
 
-/** Starts loading the given `assets/...` paths immediately; safe to draw before ready. */
+/** Starts loading the given asset paths (relative to `assets/`) immediately; safe to draw before ready. */
 export function loadSprites(paths: string[]): SpriteBank {
   const map = new Map<string, HTMLImageElement>()
   for (const p of paths) {
     const img = new Image()
-    img.src = ASSET(p)
+    img.src = ASSET(`assets/${p.replace(/^assets\//, '')}`)
     map.set(p, img)
   }
   return {
@@ -290,7 +290,7 @@ export class Floaters {
         const pop = inT < 1 ? 0.6 + 0.4 * (1 + Math.sin(inT * Math.PI - Math.PI / 2)) : 1
         const alpha = Math.min(1, f.life / (f.maxLife * 0.3))
         ctx.globalAlpha = alpha
-        ctx.translate(W / 2, H * (f.sub ? 0.47 : 0.38))
+        ctx.translate(W / 2, H * (f.sub ? 0.68 : 0.58))
         ctx.scale(pop, pop)
         ctx.font = `900 ${(f.sub ? f.size : f.size) * scale}px ${FONT_DISPLAY}`
         ctx.lineWidth = 8 * scale

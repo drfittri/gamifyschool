@@ -52,7 +52,10 @@ export default function RacerWords({ words, onCorrect, onWrong, onComplete }: Pr
 
   useEffect(() => {
     if (!started || result !== null) return
-    if (round) speak(round.word)
+    if (round) {
+      speak(round.word)
+      qaExpose({ game: 'racerwords', phase: 'playing', word: round.word, options: round.options })
+    }
   }, [started, roundIdx, result])
 
   useEffect(() => {
