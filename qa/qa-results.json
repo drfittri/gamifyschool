@@ -1,10 +1,58 @@
 [
   {
+    "game": "dashboard",
+    "viewport": "desktop",
+    "answers": 0,
+    "sessionMs": 0,
+    "errors": [],
+    "xpBefore": null,
+    "xpAfter": null,
+    "touchTargets": [],
+    "screenshots": [
+      "dashboard-desktop.png"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "targetblast",
+    "viewport": "desktop",
+    "answers": 18,
+    "shieldsLost": "n/a",
+    "sessionMs": 14923,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 120,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 184,
+        "h": 59
+      },
+      {
+        "label": "Play Again",
+        "w": 172,
+        "h": 59
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
     "game": "troopmarch",
     "viewport": "desktop",
     "answers": 18,
     "shieldsLost": "n/a",
-    "sessionMs": 14811,
+    "sessionMs": 14691,
     "errors": [],
     "xpBefore": 0,
     "xpAfter": 120,
@@ -34,14 +82,316 @@
     "verdict": "PASS"
   },
   {
+    "game": "jetfighter",
+    "viewport": "desktop",
+    "answers": 328,
+    "shieldsLost": "n/a",
+    "sessionMs": 148227,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 255,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "rocketlaunch",
+    "viewport": "desktop",
+    "answers": 30,
+    "shieldsLost": "n/a",
+    "sessionMs": 17210,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 90,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 184,
+        "h": 59
+      },
+      {
+        "label": "Play Again",
+        "w": 172,
+        "h": 59
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "racerwords",
+    "viewport": "desktop",
+    "answers": 8,
+    "shieldsLost": "n/a",
+    "sessionMs": 7788,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 105,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "treasuremap",
+    "viewport": "desktop",
+    "answers": 51,
+    "shieldsLost": "n/a",
+    "sessionMs": 42559,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 415,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "targetblast",
+    "viewport": "tablet",
+    "answers": 18,
+    "shieldsLost": "n/a",
+    "sessionMs": 14765,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 120,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 184,
+        "h": 59
+      },
+      {
+        "label": "Play Again",
+        "w": 172,
+        "h": 59
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
     "game": "troopmarch",
     "viewport": "tablet",
     "answers": 18,
     "shieldsLost": "n/a",
-    "sessionMs": 14613,
+    "sessionMs": 14634,
     "errors": [],
     "xpBefore": 0,
     "xpAfter": 120,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "jetfighter",
+    "viewport": "tablet",
+    "answers": 274,
+    "shieldsLost": "n/a",
+    "sessionMs": 139835,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 220,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "03-boss",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "rocketlaunch",
+    "viewport": "tablet",
+    "answers": 30,
+    "shieldsLost": "n/a",
+    "sessionMs": 17204,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 90,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 188,
+        "h": 61
+      },
+      {
+        "label": "Play Again",
+        "w": 176,
+        "h": 61
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "racerwords",
+    "viewport": "tablet",
+    "answers": 8,
+    "shieldsLost": "n/a",
+    "sessionMs": 7834,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 105,
+    "touchTargets": [
+      {
+        "label": "icon",
+        "w": 45,
+        "h": 45
+      },
+      {
+        "label": "🎮 More Games",
+        "w": 200,
+        "h": 65
+      },
+      {
+        "label": "Play Again",
+        "w": 187,
+        "h": 65
+      }
+    ],
+    "screenshots": [
+      "01-briefing",
+      "02-midgame",
+      "04-end"
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "game": "treasuremap",
+    "viewport": "tablet",
+    "answers": 51,
+    "shieldsLost": "n/a",
+    "sessionMs": 42460,
+    "errors": [],
+    "xpBefore": 0,
+    "xpAfter": 415,
     "touchTargets": [
       {
         "label": "icon",

@@ -40,6 +40,14 @@ src/
 │   ├── GamePicker.tsx       # Unit selector → game selector (two-step)
 │   └── GameWrapper.tsx      # (unused legacy wrapper — kept for reference)
 └── games/
+    ├── shared/
+    │   ├── wordBank.ts      # Shared WORD_EMOJI map + makeRounds() question builder
+    │   ├── qa.ts            # Dev-only window.__qa hook for the Playwright harness
+    │   ├── ranks.ts         # Per-game mission ranks shown on the end screen
+    │   └── arcade/
+    │       ├── engine.ts    # Canvas kit: particles, shake, floaters, parallax,
+    │       │                #   word pills, sprite loader (paths relative to assets/)
+    │       └── GameHud.tsx  # MissionBriefing, GameHud, PromptChip, MuteButton
     ├── WordMatch.tsx        # Match word↔emoji pairs (click both columns)
     ├── SpellingBee.tsx      # Click shuffled letters to spell a word
     ├── WordScramble.tsx     # Unscramble jumbled letters with on-screen keyboard
@@ -183,7 +191,13 @@ npm run build        # Type-check + produce dist/
 npm run preview      # Serve dist/ locally
 npm run deploy       # Build + publish to gh-pages branch → GitHub Pages
 npx tsc -b           # TypeScript type-check only (no emit)
+npm run qa           # Playwright playtest: boots dev server, drives all 6 arcade
+                     # games end-to-end on desktop+tablet, screenshots to
+                     # qa/screenshots/, results in qa/qa-results.json
 ```
+
+Note: `npm run qa` must not run while you edit `src/` — vite HMR remounts games
+mid-session and poisons results (stale `window.__qa`).
 
 ## Deployment
 
