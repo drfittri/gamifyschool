@@ -17,3 +17,11 @@ export function qaExpose(state: QaState | null) {
     ;(window as unknown as { __qa?: QaState }).__qa = state ?? undefined
   }
 }
+
+/** Per-frame live update of the canvas point (cheap mutation, dev only). */
+export function qaPoint(x: number, y: number) {
+  if (import.meta.env.DEV) {
+    const qa = (window as unknown as { __qa?: QaState }).__qa
+    if (qa) qa.point = { x, y }
+  }
+}
